@@ -1,0 +1,22 @@
+---
+# tasks for common
+- name: ping the system
+  ping:
+
+- name: update the system
+  apt: update_cache=yes upgrade=yes
+
+- name: install git
+  apt: name=git state=present
+
+- name: install my public key for root
+  authorized_key: user=root key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: install my public key for pi
+  authorized_key: user=pi key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+- name: copy sshd configuration file
+  action: copy src=roles/common/files/sshd_config dest=/etc/ssh/sshd_config owner=0 group=0 mode=644
+
+- name: restart sshd
+  service: name=ssh state=restarted enabled=yes
