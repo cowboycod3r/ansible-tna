@@ -9,17 +9,29 @@
 - name: update the system
   apt: update_cache=yes upgrade=yes
 
-- name: install my public key for remote user
-  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
-
 - name: install sudo
   apt: name=sudo
+
+- name: install zsh
+  apt: name=zsh
+
+- name: install avahi deamon
+  apt: name=avahi-daemon
+
+- name: install wifi
+  apt: name=wicd-curses
+
+- name: create me as new user
+  user: name=andre shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
+
+- name: install my public key for me
+  authorized_key: user=andre key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
+
+- name: install my public key for remote user
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
 - name: copy sshd configuration file
   action: copy src=roles/common/files/sshd_config dest=/etc/ssh/sshd_config owner=0 group=0 mode=644
 
 - name: restart sshd
   service: name=ssh state=restarted enabled=yes
-
-- name: install avahi deamon
-  apt: name=avahi-daemon
