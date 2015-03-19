@@ -4,7 +4,7 @@
   ping:
 
 - name: hostname
-  hostname: name=raspbianSandbox
+  hostname: name={{ host_name }}
 
 - name: update the system
   apt: update_cache=yes upgrade=yes

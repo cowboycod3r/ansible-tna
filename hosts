@@ -1,2 +1,9 @@
 [sandbox]
-10.0.0.13
+10.0.0.13 host_name=raspbianSandbox
+
+[integration]
+
+
+[rooms]
+
+[appserver]
