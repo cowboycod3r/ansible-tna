@@ -1,0 +1,10 @@
+---
+# tasks for common
+- name: ping the system
+  ping:
+
+- name: update the system
+  apt: update_cache=yes upgrade=yes
+
+- name: install git
+  apt: name=git state=present

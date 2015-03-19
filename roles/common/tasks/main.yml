@@ -3,11 +3,11 @@
 - name: ping the system
   ping:
 
+- name: hostname
+  hostname: name=raspbianSandbox
+
 - name: update the system
   apt: update_cache=yes upgrade=yes
-
-- name: install git
-  apt: name=git state=present
 
 - name: install my public key for root
   authorized_key: user=root key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
@@ -20,3 +20,6 @@
 
 - name: restart sshd
   service: name=ssh state=restarted enabled=yes
+
+- name: install avahi deamon
+  apt: name=avahi-daemon
