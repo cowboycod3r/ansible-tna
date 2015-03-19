@@ -4,16 +4,16 @@
   ping:
 
 - name: hostname
-  hostname: name={{ host_name }}
+  hostname: name="{{ host_name }}"
 
 - name: update the system
   apt: update_cache=yes upgrade=yes
 
-- name: install my public key for root
-  authorized_key: user=root key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+- name: install my public key for remote user
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-- name: install my public key for pi
-  authorized_key: user=pi key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+- name: install sudo
+  apt: name=sudo
 
 - name: copy sshd configuration file
   action: copy src=roles/common/files/sshd_config dest=/etc/ssh/sshd_config owner=0 group=0 mode=644

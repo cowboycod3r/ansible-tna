@@ -1,9 +1,14 @@
 [sandbox]
-10.0.0.13 host_name=raspbianSandbox
+10.0.0.13 host_name=debianSandbox ansible_ssh_user=root
+10.0.0.16 host_name=raspbianSandbox ansible_ssh_user=pi
 
 [integration]
 
 
 [rooms]
 
+
 [appserver]
+
+
+[fileserver]

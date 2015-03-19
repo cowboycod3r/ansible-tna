@@ -1,8 +1,7 @@
 ---
 # sandbox playbook
-- name: the sandbox
+- name: the sandbox playbook
   hosts: sandbox
-  remote_user: root
   roles:
     - common
     - development
