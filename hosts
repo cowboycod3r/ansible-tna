@@ -1,9 +1,8 @@
 [sandbox]
 debianSandbox.local 	host_name=debianSandbox ansible_ssh_user=root
-raspbianSandbox.local 	host_name=raspbianSandbox ansible_ssh_user=pi
 
 [integration]
-
+raspbianSandbox.local 	host_name=raspbianSandbox ansible_ssh_user=pi
 
 [rooms]
 

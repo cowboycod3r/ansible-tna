@@ -6,6 +6,10 @@
 - name: hostname
   hostname: name="{{ host_name }}"
 
+- name: hosts
+  command: sed 's/^127.0.1.1 .*/127.0.1.1\t"{{ host_name }}"/' hosts chdir=/etc
+  changed_when: False
+
 - name: update the system
   apt: update_cache=yes upgrade=yes
 
