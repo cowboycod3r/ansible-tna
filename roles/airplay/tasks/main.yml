@@ -46,7 +46,7 @@
   command: update-rc.d shairport defaults
 
   # create a shairport user for the service
-
+  # use 'mkpasswd --method=SHA-512' to generate hash
 - name: create shairport user
   user: name=shairport shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 

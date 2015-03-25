@@ -23,7 +23,8 @@
 
 - name: install wifi
   apt: name=wicd-curses
-
+  
+  # use mkpasswd --method=SHA-512 to generate hash
 - name: create me as new user
   user: name=andre shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
