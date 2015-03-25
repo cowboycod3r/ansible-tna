@@ -3,5 +3,8 @@
 - name: ping the system
   ping:
 
+- name: install vim
+  apt: name=vim
+  
 - name: install git
   apt: name=git state=present update_cache=yes

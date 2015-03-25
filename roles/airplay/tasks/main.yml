@@ -23,57 +23,32 @@
 - name: install need libs -> libasound2-dev
   apt: name=libasound2-dev state=present
 
-  # checkout and build shairport
-
-- name: clone shairport from github
-  git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
-
-- name: make
-  command: make chdir=/opt/shairport
-
-- name: make install
-  command: make install chdir=/opt/shairport
-
-  # configure the system to start the shairport service
-
-- name: copy to init.d
-  command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
-
-- name: change permissions
-  command: chmod 755 /etc/init.d/shairport
-
-- name: service starts with system start
-  command: update-rc.d shairport defaults
-
   # create a shairport user for the service
   # use 'mkpasswd --method=SHA-512' to generate hash
+
 - name: create shairport user
   user: name=shairport shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
 - name: install my public key for shairport user
   authorized_key: user=shairport key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
 
-  # start the service if not started
+  # checkout and build shairport
 
-- name: start shairport
-  service: name=shairport state=started enabled=yes
+- name: clone shairport from github
+  git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
+  notify:
+    - make
+    - make install
+    - init.d copy
+    - init.d permissions
+    - update-rc.d
+    - restart shairport
 
   # use usb sound card
 
 - name: forces the USB device to become the default audio output device
   action: copy src=roles/airplay/files/alsa-base.conf dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=644
-
-  # restart the system
-
-- name: restart machine
-  command: shutdown -r now "Ansible updates triggered"
-  async: 0
-  poll: 0
-  ignore_errors: true
-
-- name: waiting for server to come back
-  local_action: wait_for host={{ inventory_hostname }} state=started
-  sudo: false
-
-- name: ping the system
-  ping:
+  notify:
+    - restart machine
+    - waiting for come back
+    - ping
