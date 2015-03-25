@@ -1,0 +1,2 @@
+[development]
+debianSandbox.local 	host_name=debianSandbox ansible_ssh_user=root

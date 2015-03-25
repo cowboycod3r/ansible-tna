@@ -1,7 +1,7 @@
 ---
 # sandbox playbook
 - name: the sandbox playbook
-  hosts: sandbox
+  hosts: development
   roles:
     - common
     - development

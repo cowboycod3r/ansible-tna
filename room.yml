@@ -1,0 +1,10 @@
+---
+# rooms
+
+- name: the room playbook
+  hosts: room
+  roles:
+	- common
+	- airplay
+	- development
+	

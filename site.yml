@@ -1,3 +1,6 @@
 ---
-# site
-- include: sandbox.yml
+# master playbook
+
+- include: room.yml
+- include: appserver.yml
+- include: fileserver.yml

@@ -8,6 +8,9 @@
 - name: install avahi deamon
   apt: name=avahi-daemon
 
+- name: start avahi
+  service: name=avahi-daemon state=started enabled=yes
+
 - name: install git
   apt: name=git state=present update_cache=yes
 
@@ -31,7 +34,7 @@
 - name: make install
   command: make install chdir=/opt/shairport
 
-  #  configure the system to start the shairport service
+  # configure the system to start the shairport service
 
 - name: copy to init.d
   command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
@@ -50,6 +53,10 @@
 - name: install my public key for shairport user
   authorized_key: user=shairport key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
 
+  # start the service if not started
+
+- name: start shairport
+  service: name=shairport state=started enabled=yes
 
   # use usb sound card
 
@@ -70,8 +77,3 @@
 
 - name: ping the system
   ping:
-
-  # start the service if not started
-
-- name: start shairport
-  service: name=shairport state=started enabled=yes
