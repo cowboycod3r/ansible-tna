@@ -3,5 +3,5 @@
 - name: the appserver playbook
   hosts: appserver
   roles:
-	- common
-	- development
+    - common
+    - development

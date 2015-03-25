@@ -4,5 +4,5 @@
 - name: the fileserver playbook
   hosts: fileserver
   roles:
-		- common
-		- development
+    - common
+    - development
