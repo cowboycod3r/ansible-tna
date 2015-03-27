@@ -6,12 +6,28 @@
 
 - name: wifi config 1
   lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^network={" line="network={" insertafter=EOF create=yes
+  notify:
+      - restart machine
+      - waiting for come back
+      - ping
 
 - name: wifi config 2
   lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^    ssid=" line="    ssid=\"{{ wifi_ssid }}\"" insertafter=EOF
+  notify:
+      - restart machine
+      - waiting for come back
+      - ping
 
 - name: wifi config 3
   lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="    psk=" line="    psk=\"{{ wifi_psk }}\"" insertafter=EOF
+  notify:
+      - restart machine
+      - waiting for come back
+      - ping
 
 - name: wifi config 4
   lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^}" line="}" insertafter=EOF
+  notify:
+      - restart machine
+      - waiting for come back
+      - ping
