@@ -1,6 +1,0 @@
-[development]
-10.0.0.22 	host_name=dev02 ansible_ssh_user=root
-
-[development:vars]
-wifi_ssid=testid
-wifi_psk=testpsk

@@ -1,9 +1,0 @@
----
-# sandbox playbook
-- name: the sandbox playbook
-  hosts: development
-  roles:
-    - common
-    - development
-    - airplay
-    - pi-wifi
