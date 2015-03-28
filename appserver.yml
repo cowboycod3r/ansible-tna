@@ -4,4 +4,4 @@
   hosts: appserver
   roles:
     - common
-    - development
+    - devenvironment

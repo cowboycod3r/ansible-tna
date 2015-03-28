@@ -5,4 +5,4 @@
   hosts: fileserver
   roles:
     - common
-    - development
+    - devenvironment
