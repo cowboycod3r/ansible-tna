@@ -2,7 +2,7 @@
 # rooms
 
 - name: the room playbook
-  hosts: room
+  hosts: roomserver
   roles:
     - common
     - airplay

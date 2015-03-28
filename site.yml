@@ -1,6 +1,6 @@
 ---
 # master playbook
 
-- include: room.yml
+- include: roomserver.yml
 - include: appserver.yml
 - include: fileserver.yml
