@@ -2,3 +2,5 @@
 .Trashes
 *.log
 production
+development
+development.yml
