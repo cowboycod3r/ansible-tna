@@ -38,7 +38,8 @@
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
   register: result
   notify:
-    - restart shairport
+    - reboot
+    - waiting for come back
 
 - name: make
   command: make chdir=/opt/shairport
