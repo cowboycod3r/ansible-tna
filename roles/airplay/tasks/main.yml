@@ -37,6 +37,8 @@
 - name: clone shairport from github
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
   register: result
+  notify:
+    - restart shairport
 
 - name: make
   command: make chdir=/opt/shairport
@@ -60,10 +62,9 @@
   command: update-rc.d shairport defaults
   when: result|changed
 
-  # restart the service
+- name: start shairport
+  service: name=shairport state=started enabled=yes
 
-- name: restart shairport
-  service: name=shairport state=restarted enabled=yes
 
   # use usb sound card
 
