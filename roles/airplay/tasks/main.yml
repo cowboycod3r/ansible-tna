@@ -36,23 +36,29 @@
 
 - name: clone shairport from github
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
+  register: result
 
 - name: make
   command: make chdir=/opt/shairport
+  when: result|changed
 
 - name: make install
   command: make install chdir=/opt/shairport
+  when: result|changed
 
   # configure the system to start the shairport service
 
 - name: init.d copy
   command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
+  when: result|changed
 
 - name: init.d permissions
   command: chmod 755 /etc/init.d/shairport
+  when: result|changed
 
 - name: update-rc.d
   command: update-rc.d shairport defaults
+  when: result|changed
 
   # restart the service
 
