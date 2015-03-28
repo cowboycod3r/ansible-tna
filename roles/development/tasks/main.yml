@@ -4,7 +4,7 @@
   ping:
 
 - name: install vim
-  apt: name=vim
-  
+  apt: name=vim state=latest
+
 - name: install git
-  apt: name=git state=present update_cache=yes
+  apt: name=git state=latest update_cache=yes

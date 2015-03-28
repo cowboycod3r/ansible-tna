@@ -36,19 +36,33 @@
 
 - name: clone shairport from github
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
-  notify:
-    - make
-    - make install
-    - init.d copy
-    - init.d permissions
-    - update-rc.d
-    - restart shairport
+
+- name: make
+  command: make chdir=/opt/shairport
+
+- name: make install
+  command: make install chdir=/opt/shairport
+
+  # configure the system to start the shairport service
+
+- name: init.d copy
+  command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
+
+- name: init.d permissions
+  command: chmod 755 /etc/init.d/shairport
+
+- name: update-rc.d
+  command: update-rc.d shairport defaults
+
+  # restart the service
+
+- name: restart shairport
+  service: name=shairport state=restarted enabled=yes
 
   # use usb sound card
 
 - name: forces the USB device to become the default audio output device
   action: copy src=roles/airplay/files/alsa-base.conf dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=644
   notify:
-    - restart machine
+    - reboot
     - waiting for come back
-    - ping

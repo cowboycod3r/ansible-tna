@@ -1,31 +1,9 @@
 ---
 # airplay handlers
 
-- name: make
-  command: make chdir=/opt/shairport
-
-- name: make install
-  command: make install chdir=/opt/shairport
-
-  # configure the system to start the shairport service
-
-- name: init.d copy
-  command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
-
-- name: init.d permissions
-  command: chmod 755 /etc/init.d/shairport
-
-- name: update-rc.d
-  command: update-rc.d shairport defaults
-
-  # restart the service
-
-- name: restart shairport
-  service: name=shairport state=restarted enabled=yes
-
   # restart the system
 
-- name: restart machine
+- name: reboot
   command: shutdown -r now "Ansible updates triggered"
   async: 0
   poll: 0
@@ -34,6 +12,3 @@
 - name: waiting for come back
   local_action: wait_for host={{ inventory_hostname }} state=started
   sudo: false
-
-- name: ping
-  ping:

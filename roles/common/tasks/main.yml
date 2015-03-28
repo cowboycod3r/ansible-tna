@@ -37,4 +37,5 @@
 - name: copy sshd configuration file
   action: copy src=roles/common/files/sshd_config dest=/etc/ssh/sshd_config owner=0 group=0 mode=644
   notify:
-  - restart sshd
+  - reboot
+  - waiting for come back

@@ -3,7 +3,7 @@
 
   # restart the system
 
-- name: restart machine
+- name: reboot
   command: shutdown -r now "Ansible updates triggered"
   async: 0
   poll: 0
