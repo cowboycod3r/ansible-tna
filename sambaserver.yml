@@ -1,8 +1,8 @@
 ---
 # fileserver playbook
 
-- name: the fileserver playbook
-  hosts: fileserver
+- name: the samba playbook
+  hosts: sambaserver
   roles:
     - common
     - devenvironment

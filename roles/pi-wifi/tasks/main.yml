@@ -1,9 +1,6 @@
 ---
 # tasks for pi wifi
 
-- name: ping the system
-  ping:
-
 - name: wifi config 1/4
   lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^network={" line="network={" insertafter=EOF create=yes
   notify:

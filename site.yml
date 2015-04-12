@@ -1,6 +1,12 @@
 ---
 # master playbook
 
+- name: ping all systems
+  hosts: all
+  tasks:
+  - name: ping
+    ping:
+
 - include: roomserver.yml
 - include: appserver.yml
-- include: fileserver.yml
+- include: sambaserver.yml

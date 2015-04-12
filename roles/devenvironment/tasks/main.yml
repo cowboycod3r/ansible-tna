@@ -1,7 +1,7 @@
 ---
-# tasks for common
-- name: ping the system
-  ping:
+# tasks for devEnvironment
+
+# install most important packages
 
 - name: install vim
   apt: name=vim state=latest
