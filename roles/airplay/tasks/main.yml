@@ -6,8 +6,10 @@
 - name: install avahi deamon
   apt: name=avahi-daemon
 
-- name: start avahi
+- name: avahi
   service: name=avahi-daemon state=started enabled=yes
+  tags:
+    - systemcheck
 
 - name: install git
   apt: name=git state=present update_cache=yes
@@ -37,7 +39,6 @@
   register: result
   notify:
     - reboot
-    - waiting for come back
 
 - name: make
   command: make chdir=/opt/shairport
@@ -61,8 +62,10 @@
   command: update-rc.d shairport defaults
   when: result|changed
 
-- name: start shairport
+- name: shairport
   service: name=shairport state=started enabled=yes
+  tags:
+    - systemcheck
 
 # use usb sound card
 
@@ -70,4 +73,3 @@
   action: copy src=roles/airplay/files/alsa-base.conf dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=644
   notify:
     - reboot
-    - waiting for come back
