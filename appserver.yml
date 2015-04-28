@@ -1,7 +1,0 @@
----
-# appserver playbook
-- name: the appserver playbook
-  hosts: appserver
-  roles:
-    - common
-    - devenvironment

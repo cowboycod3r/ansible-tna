@@ -7,6 +7,22 @@
   - name: ping
     ping:
 
-- include: roomserver.yml
-- include: appserver.yml
-- include: sambaserver.yml
+- name: appserver
+  hosts: appserver
+  roles:
+    - common
+    - devenvironment
+
+- name: roomserver
+  hosts: roomserver
+  roles:
+    - common
+    - airplay
+    - devenvironment
+    - pi-wifi
+
+- name: sambaserver
+  hosts: sambaserver
+  roles:
+    - common
+    - devenvironment
