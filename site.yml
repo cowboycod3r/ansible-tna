@@ -17,8 +17,8 @@
   hosts: roomserver
   roles:
     - common
-    - airplay
     - devenvironment
+    - airplay
     - pi-wifi
 
 - name: sambaserver

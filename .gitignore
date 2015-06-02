@@ -1,6 +1,5 @@
 .DS_Store
 .Trashes
 *.log
-production
 development
 development.yml

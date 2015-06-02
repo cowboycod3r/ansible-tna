@@ -14,13 +14,13 @@
 - name: install git
   apt: name=git state=present update_cache=yes
 
-- name: install need libs -> libssl-dev
+- name: install libs -> libssl-dev
   apt: name=libssl-dev state=present
 
-- name: install need libs -> libavahi-client-dev
+- name: install libs -> libavahi-client-dev
   apt: name=libavahi-client-dev state=present
 
-- name: install need libs -> libasound2-dev
+- name: install libs -> libasound2-dev
   apt: name=libasound2-dev state=present
 
 # create a shairport user for the service
