@@ -9,18 +9,21 @@
 - name: hosts
   lineinfile: dest=/etc/hosts regexp="^127.0.1.1" line="127.0.1.1\t{{ host_name }}"
 
+
+
+
 # system update
 
 - name: update the system
   apt: update_cache=yes upgrade=yes
 
+
+
+
 # install most important packages
 
 - name: install sudo
   apt: name=sudo
-
-- name: install zsh
-  apt: name=zsh
 
 - name: install avahi deamon
   apt: name=avahi-daemon
@@ -30,6 +33,9 @@
   tags:
     - systemcheck
 
+
+
+
 # create users and provide public key
 
   # use mkpasswd --method=SHA-512 to generate hash
@@ -37,13 +43,21 @@
   user: name=andre shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
 - name: install my public key for me
-  authorized_key: user=andre key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
+  authorized_key: user=andre key="{{ lookup('file', '/Users/andre/.ssh/id_rsa.pub') }}" manage_dir=yes
 
 - name: add me to sudoers
   lineinfile: dest=/etc/sudoers state=present regexp="^andre" line="andre   ALL=(ALL:ALL) ALL" insertafter="^root"
 
+
+
+
+# provide public keys for remote user
+
+- name: install current public key for remote user
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
+
 - name: install my public key for remote user
-  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '/Users/andre/.ssh/id_rsa.pub') }}" manage_dir=yes
 
 # update sshd configuration
 

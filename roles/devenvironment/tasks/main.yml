@@ -3,6 +3,9 @@
 
 # install most important packages
 
+- name: install zsh
+  apt: name=zsh state=latest
+
 - name: install vim
   apt: name=vim state=latest
 
