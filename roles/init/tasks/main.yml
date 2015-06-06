@@ -1,0 +1,8 @@
+---
+# tasks for init
+
+# install sudo
+
+- name: install sudo
+  apt: name=sudo
+  when: ansible_env.USER == "root"

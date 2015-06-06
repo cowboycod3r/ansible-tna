@@ -22,9 +22,6 @@
 
 # install most important packages
 
-- name: install sudo
-  apt: name=sudo
-
 - name: install avahi deamon
   apt: name=avahi-daemon
 
@@ -58,6 +55,9 @@
 
 - name: install my public key for remote user
   authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '/Users/andre/.ssh/id_rsa.pub') }}" manage_dir=yes
+
+
+
 
 # update sshd configuration
 

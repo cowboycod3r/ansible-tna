@@ -3,26 +3,24 @@
 
 - name: ping all systems
   hosts: all
+  roles:
+    - init
+    - common
+    - devenvironment
   tasks:
-  - name: ping
-    ping:
+    - name: ping
+      ping:
 
 - name: appserver
   hosts: appserver
   roles:
-    - common
-    - devenvironment
 
 - name: home
   hosts: home
   roles:
-    - common
-    - devenvironment
     - airplay
     - pi-wifi
 
 - name: sambaserver
   hosts: sambaserver
   roles:
-    - common
-    - devenvironment
