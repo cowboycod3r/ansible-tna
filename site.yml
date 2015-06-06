@@ -7,9 +7,6 @@
     - init
     - common
     - devenvironment
-  tasks:
-    - name: ping
-      ping:
 
 - name: appserver
   hosts: appserver

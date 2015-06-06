@@ -64,7 +64,7 @@
   when: result|changed
 
 - name: init.d permissions
-  command: chmod 755 /etc/init.d/shairport
+  file: path=/etc/init.d/shairport mode=0755
   when: result|changed
 
 - name: update-rc.d
