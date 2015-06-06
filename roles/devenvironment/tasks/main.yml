@@ -6,8 +6,29 @@
 - name: install zsh
   apt: name=zsh state=latest
 
+- name: switch to zsh
+  command: chsh -s /bin/zsh "{{ remote_user }}"
+
 - name: install vim
   apt: name=vim state=latest
 
 - name: install git
   apt: name=git state=latest update_cache=yes
+
+
+
+
+# get devEnvironment from github
+
+- name: clone devEnvironment from github
+  git: repo=https://github.com/cowboycod3r/devEnvironment.git dest=/opt/devEnvironment version=debian
+  register: result
+
+- name: create sym links for remote user
+  shell: ./create-links.sh chdir=/opt/devEnvironment
+  when: result|changed
+
+- name: create sym links for andre
+  shell: ./create-links.sh chdir=/opt/devEnvironment
+  when: result|changed
+  remote_user: andre
