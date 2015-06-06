@@ -8,6 +8,7 @@
 
 - name: switch to zsh
   command: chsh -s /bin/zsh "{{ remote_user }}"
+  changed_when: False
 
 - name: install vim
   apt: name=vim state=latest
@@ -27,8 +28,3 @@
 - name: create sym links for remote user
   shell: ./create-links.sh chdir=/opt/devEnvironment
   when: result|changed
-
-- name: create sym links for andre
-  shell: ./create-links.sh chdir=/opt/devEnvironment
-  when: result|changed
-  remote_user: andre
