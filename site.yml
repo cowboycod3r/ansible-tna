@@ -21,3 +21,4 @@
 - name: sambaserver
   hosts: sambaserver
   roles:
+    - samba

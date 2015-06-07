@@ -32,7 +32,7 @@
 - name: install avahi deamon
   apt: name=avahi-daemon
 
-- name: avahi
+- name: avahi service
   service: name=avahi-daemon state=started enabled=yes
   tags:
     - systemcheck

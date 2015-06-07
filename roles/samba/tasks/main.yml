@@ -1,0 +1,58 @@
+---
+# tasks for samba
+
+
+
+
+- name: install samba
+  apt: name=samba
+
+- name: install samba-common-bin
+  apt: name=samba-common-bin
+
+- name: install avahi deamon
+  apt: name=avahi-daemon
+
+
+  # use mkpasswd --method=SHA-512 to generate hash
+- name: create samba user
+  user: name={{ samba_user }} password=$6$ELlU2pWE$oI5OUShKaaUZY7Ck3wmIb/UnFn/tFDhwfO3Jt8fsSOK9al5P8tZCXnby1gOlz8hemFVYUOAGrqzvF4u2sLeGy0
+
+- name: check owner of my home dir
+  file: path=/home/{{ samba_user }}  owner={{ samba_user }}  group={{ samba_user }}  recurse=yes
+
+- name: create samba password
+  shell: (echo {{ samba_passwd }}; echo {{ samba_passwd }}) | smbpasswd -s -a {{ samba_user }}
+  changed_when: False
+
+
+
+- name: samba configuration
+  template: src=roles/samba/files/smb.conf.j2 dest=/etc/samba/smb.conf backup=yes
+  notify:
+    - reboot
+
+- name: samba service
+  service: name=samba state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+
+- name: avahi configuration
+  template: src=roles/samba/files/smb.service.j2 dest=/etc/avahi/services/smb.service backup=yes
+  notify:
+    - reboot
+
+- name: avahi service
+  service: name=avahi-daemon state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+- name: automout sda1
+  lineinfile: dest=/etc/fstab state=present regexp="^/dev/sda1" line="/dev/sda1       /media/hdd1     auto    defaults,noatime  0       0"
+  notify:
+    - reboot

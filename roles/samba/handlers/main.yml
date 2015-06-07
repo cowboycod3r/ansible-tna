@@ -1,0 +1,18 @@
+---
+# common handlers
+
+- name: restart samba
+  service: name=samba state=restarted enabled=yes
+
+- name: restart avahi
+  service: name=avahi-daemon state=restarted enabled=yes
+
+- name: reboot
+  command: shutdown -r now "Ansible updates triggered"
+  async: 0
+  poll: 0
+  ignore_errors: true
+
+- name: waiting for come back
+  local_action: wait_for host={{ inventory_hostname }} state=started
+  sudo: false
