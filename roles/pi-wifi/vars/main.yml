@@ -1,5 +1,4 @@
 ---
 # pi wifi vars
 
-remote_user: "{{ ansible_ssh_user }}"
 sudo: yes
