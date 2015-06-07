@@ -14,6 +14,8 @@
   apt: name=avahi-daemon
 
 
+
+
   # use mkpasswd --method=SHA-512 to generate hash
 - name: create samba user
   user: name={{ samba_user }} password=$6$ELlU2pWE$oI5OUShKaaUZY7Ck3wmIb/UnFn/tFDhwfO3Jt8fsSOK9al5P8tZCXnby1gOlz8hemFVYUOAGrqzvF4u2sLeGy0
@@ -24,6 +26,7 @@
 - name: create samba password
   shell: (echo {{ samba_passwd }}; echo {{ samba_passwd }}) | smbpasswd -s -a {{ samba_user }}
   changed_when: False
+
 
 
 
