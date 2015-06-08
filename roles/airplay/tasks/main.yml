@@ -32,7 +32,7 @@
   user: name=shairport password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
 - name: install my public key for shairport user
-  authorized_key: user=shairport key="{{ lookup('file', me_key }}" manage_dir=yes
+  authorized_key: user=shairport key="{{ lookup('file', me_key) }}" manage_dir=yes
 
 
 
