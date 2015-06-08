@@ -1,7 +1,8 @@
 ---
 # tasks for airplay
 
-# preconditions: install all libs and tools needed to build shairport
+
+
 
 - name: install avahi deamon
   apt: name=avahi-daemon
@@ -26,19 +27,15 @@
 
 
 
-# create a shairport user for the service
-
   # use 'mkpasswd --method=SHA-512' to generate hash
 - name: create shairport user
-  user: name=shairport shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
+  user: name=shairport password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
 - name: install my public key for shairport user
   authorized_key: user=shairport key="{{ lookup('file', '/Users/andre/.ssh/id_rsa.pub') }}" manage_dir=yes
 
 
 
-
-# checkout and build shairport
 
 - name: clone shairport from github
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
@@ -56,8 +53,6 @@
 
 
 
-
-# configure the system to start the shairport service
 
 - name: init.d copy
   command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
@@ -79,9 +74,7 @@
 
 
 
-# use usb sound card
-
 - name: forces the USB device to become the default audio output device
-  action: copy src=roles/airplay/files/alsa-base.conf dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=644
+  template: src=roles/airplay/files/alsa-base.conf.j2 dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=0644 backup=yes
   notify:
     - reboot
