@@ -45,16 +45,16 @@
 
   # use mkpasswd --method=SHA-512 to generate hash
 - name: create me as new user
-  user: name=andre shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
+  user: name={{ me }} shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
 - name: check owner of my home dir
-  file: path=/home/andre owner=andre group=andre recurse=yes
+  file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
 
 - name: install my public key for me
-  authorized_key: user=andre key="{{ lookup('file', '/Users/andre/.ssh/id_rsa.pub') }}" manage_dir=yes
+  authorized_key: user={{ me }} key="{{ lookup('file', me_key) }}" manage_dir=yes
 
 - name: add me to sudoers
-  lineinfile: dest=/etc/sudoers state=present regexp="^andre" line="andre   ALL=(ALL:ALL) ALL" insertafter="^root"
+  lineinfile: dest=/etc/sudoers state=present regexp="^{{ me }}" line="{{ me }}   ALL=(ALL:ALL) ALL" insertafter="^root"
 
 
 
@@ -65,7 +65,7 @@
   authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
 
 - name: install my public key for remote user
-  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '/Users/andre/.ssh/id_rsa.pub') }}" manage_dir=yes
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
 
 
 
