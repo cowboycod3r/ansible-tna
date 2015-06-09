@@ -55,6 +55,12 @@
 
 
 
+
+- name: hdd1 folder
+  file: path=/media/hdd1 state=directory mode=0777
+  tags:
+    - systemcheck
+
 - name: automout sda1
   lineinfile: dest=/etc/fstab state=present regexp="^/dev/sda1" line="/dev/sda1       /media/hdd1     auto    defaults,noatime  0       0"
   notify:
