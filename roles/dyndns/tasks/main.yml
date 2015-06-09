@@ -1,0 +1,21 @@
+---
+# tasks for dyn dns
+
+
+
+
+- name: install ddclient
+  apt: name=ddclient
+
+- name: ddclient configuration
+  template: src=roles/dyndns/files/ddclient.conf.j2 dest=/etc/ddclient.conf backup=yes
+  notify:
+    - reboot
+
+- name: ddclient service
+  service: name=ddclient state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
