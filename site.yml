@@ -22,3 +22,4 @@
   hosts: sambaserver
   roles:
     - samba
+    - dyndns
