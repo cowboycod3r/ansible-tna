@@ -1,0 +1,107 @@
+---
+# tasks for wordpress
+
+
+
+
+- name: install nginx
+  apt: name=nginx
+
+- name: nginx configuration for wordpress
+  template: src=default.conf.j2 dest=/etc/nginx/conf.d/default.conf
+  notify: reboot
+
+- name: nginx service
+  service: name=nginx state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+- name: install php5-fpm
+  apt: name=php5-fpm
+
+- name: install php5-mysql
+  apt: name=php5-mysql
+
+- name: install php5-gd
+  apt: name=php5-gd
+
+- name: install php5-curl
+  apt: name=php5-curl
+
+- name: install php(5)-apc
+  apt: name=php-apc
+
+- name: disable default pool
+  command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.disabled creates=/etc/php5/fpm/pool.d/www.disabled
+  notify: reboot
+
+- name: copy php-fpm configuration
+  template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf
+  notify: reboot
+
+- name: php5-fpm service
+  service: name=php5-fpm state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+
+- name: install mysql-server
+  apt: name=mysql-server
+
+- name: install MySQL-python (python-mysqldb)
+  apt: name=python-mysqldb
+
+- name: create mysql configuration file
+  template: src=my.conf.j2 dest=/etc/my.cnf
+  notify: reboot
+
+- name: mysql service
+  service: name=mysql state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+
+- name: download wordpress
+  get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/opt/wordpress-{{ wp_version }}.tar.gz
+
+- name: extract archive
+  command: chdir=/opt/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/opt/wordpress
+
+- name: add group "wordpress"
+  group: name=wordpress
+
+- name: add user "wordpress"
+  user: name=wordpress group=wordpress home=/opt/wordpress/
+
+- name: fetch random salts for wordpress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: "wp_salt"
+  sudo: no
+
+- name: create wordpress database
+  mysql_db: name={{ wp_db_name }} state=present
+
+- name: create wordpress database user
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+
+- name: copy wordpress config file
+  template: src=wp-config.php.j2 dest=/opt/wordpress/wp-config.php
+
+- name: change ownership of wordpress installation
+  file: path=/opt/wordpress/ owner=wordpress group=wordpress state=directory recurse=yes
+
+- name: add php.ini
+  template: src=php.ini.j2 dest=/opt/wordpress/php.ini
+
+
+
+
+
+
+
