@@ -8,15 +8,20 @@
     - common
     - devenvironment
 
-- name: appserver
-  hosts: appserver
-  roles:
-
 - name: home
   hosts: home
   roles:
     - airplay
     - pi-wifi
+
+- name: appserver
+  hosts: appserver
+  roles:
+
+- name: blogserver
+  hosts: blogserver
+  roles:
+    - wordpress
 
 - name: sambaserver
   hosts: sambaserver
