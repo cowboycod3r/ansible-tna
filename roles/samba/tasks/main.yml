@@ -31,7 +31,7 @@
 
 
 - name: samba configuration
-  template: src=roles/samba/files/smb.conf.j2 dest=/etc/samba/smb.conf backup=yes
+  template: src=smb.conf.j2 dest=/etc/samba/smb.conf backup=yes
   notify:
     - reboot
 
@@ -44,7 +44,7 @@
 
 
 - name: avahi configuration
-  template: src=roles/samba/files/smb.service.j2 dest=/etc/avahi/services/smb.service backup=yes
+  template: src=smb.service.j2 dest=/etc/avahi/services/smb.service backup=yes
   notify:
     - reboot
 
