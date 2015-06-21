@@ -1,22 +1,6 @@
 ---
 # tasks for pi wifi
 
-- name: wifi config 1/4
-  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^network={" line="network={" insertafter=EOF create=yes
-  notify:
-      - reboot
-
-- name: wifi config 2/4
-  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^    ssid=" line="    ssid=\"{{ wifi_ssid }}\"" insertafter=EOF
-  notify:
-      - reboot
-
-- name: wifi config 3/4
-  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="    psk=" line="    psk=\"{{ wifi_psk }}\"" insertafter=EOF
-  notify:
-      - reboot
-
-- name: wifi config 4/4
-  lineinfile: dest=/etc/wpa_supplicant/wpa_supplicant.conf state=present regexp="^}" line="}" insertafter=EOF
-  notify:
-      - reboot
+- name: wifi config file
+  template: src=wpa_supplicant.conf.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf backup=yes
+  notify: reboot

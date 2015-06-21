@@ -79,19 +79,21 @@
 - name: add user "wordpress"
   user: name=wordpress group=wordpress home=/opt/wordpress/
 
-- name: fetch random salts for wordpress config
-  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
-  register: "wp_salt"
-  sudo: no
-
 - name: create wordpress database
   mysql_db: name={{ wp_db_name }} state=present
 
 - name: create wordpress database user
   mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
 
+- name: fetch random salts for wordpress config
+  local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
+  register: "wp_salt"
+  sudo: no
+  changed_when: False
+
 - name: copy wordpress config file
   template: src=wp-config.php.j2 dest=/opt/wordpress/wp-config.php
+  changed_when: False
 
 - name: change ownership of wordpress installation
   file: path=/opt/wordpress/ owner=wordpress group=wordpress state=directory recurse=yes
