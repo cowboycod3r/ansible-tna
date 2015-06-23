@@ -38,7 +38,7 @@
   notify: reboot
 
 - name: copy php-fpm configuration
-  template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf
+  template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf backup=yes
   notify: reboot
 
 - name: php5-fpm service
@@ -56,7 +56,7 @@
   apt: name=python-mysqldb
 
 - name: create mysql configuration file
-  template: src=my.conf.j2 dest=/etc/my.cnf
+  template: src=my.conf.j2 dest=/etc/my.cnf backup=yes
   notify: reboot
 
 - name: mysql service
@@ -92,14 +92,14 @@
   changed_when: False
 
 - name: copy wordpress config file
-  template: src=wp-config.php.j2 dest=/opt/wordpress/wp-config.php
+  template: src=wp-config.php.j2 dest=/opt/wordpress/wp-config.php backup=yes
   changed_when: False
 
 - name: change ownership of wordpress installation
   file: path=/opt/wordpress/ owner=wordpress group=wordpress state=directory recurse=yes
 
 - name: add php.ini
-  template: src=php.ini.j2 dest=/opt/wordpress/php.ini
+  template: src=php.ini.j2 dest=/opt/wordpress/php.ini backup=yes
 
 
 
