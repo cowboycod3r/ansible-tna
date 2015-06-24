@@ -8,8 +8,8 @@
   service: name=avahi-daemon state=restarted enabled=yes
 
 - name: reboot
-  command: shutdown -r now "Ansible updates triggered"
-  async: 0
+  command: reboot
+  async: 20
   poll: 0
   ignore_errors: true
 

@@ -36,7 +36,7 @@
     - reboot
 
 - name: samba service
-  service: name=samba state=started enabled=yes
+  service: name=smbd state=started enabled=yes
   tags:
     - systemcheck
 
