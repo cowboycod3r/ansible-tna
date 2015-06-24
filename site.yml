@@ -1,16 +1,13 @@
 ---
 # master playbook
 
-- name: all server
-  hosts: all
-  roles:
-    - init
-    - common
-    - devenvironment
 
 - name: home
   hosts: home
   roles:
+    - init
+    - common
+    - devenvironment
     - airplay
     - pi-wifi
 
@@ -21,10 +18,16 @@
 - name: blogserver
   hosts: blogserver
   roles:
+    - init
+    - common
+    - devenvironment
     - wordpress
 
 - name: sambaserver
   hosts: sambaserver
   roles:
+    - init
+    - common
+    - devenvironment
     - samba
     - dyndns
