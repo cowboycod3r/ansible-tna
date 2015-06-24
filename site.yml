@@ -6,7 +6,6 @@
   hosts: home
   roles:
     - init
-    - common
     - devenvironment
     - airplay
     - pi-wifi
@@ -19,7 +18,6 @@
   hosts: blogserver
   roles:
     - init
-    - common
     - devenvironment
     - wordpress
 
@@ -27,7 +25,6 @@
   hosts: sambaserver
   roles:
     - init
-    - common
     - devenvironment
     - samba
     - dyndns

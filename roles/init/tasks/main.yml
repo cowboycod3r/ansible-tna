@@ -1,8 +1,88 @@
 ---
 # tasks for init
 
-# install sudo
-
 - name: install sudo
   apt: name=sudo
   when: ansible_env.USER == "root"
+  sudo: no
+
+
+
+
+# hostname
+
+- name: hostname
+  hostname: name="{{ host_name }}"
+  notify:
+    - reboot
+
+- name: hosts
+  lineinfile: dest=/etc/hosts regexp="^127.0.1.1" line="127.0.1.1\t{{ host_name }}"
+  notify:
+    - reboot
+
+
+
+
+# system update
+
+- name: update the system
+  apt: update_cache=yes upgrade=yes
+
+
+
+
+# install most important packages
+
+- name: install zsh
+  apt: name=zsh state=latest
+
+- name: install avahi deamon
+  apt: name=avahi-daemon
+
+- name: avahi service
+  service: name=avahi-daemon state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+
+
+# create users and provide public key
+
+  # use mkpasswd --method=SHA-512 to generate hash
+- name: create me as new user
+  user: name={{ me }} shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
+
+- name: check owner of my home dir
+  file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
+
+- name: install my public key for me
+  authorized_key: user={{ me }} key="{{ lookup('file', me_key) }}" manage_dir=yes
+
+- name: add me to sudoers
+  lineinfile: dest=/etc/sudoers state=present regexp="^{{ me }}" line="{{ me }}   ALL=(ALL:ALL) ALL" insertafter="^root"
+
+
+
+
+# provide public keys for remote user
+
+- name: install current public key for remote user
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
+
+- name: install my public key for remote user
+  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
+
+
+
+
+# update sshd configuration
+
+- name: sshd configuration file
+  template: src=sshd_config.j2 dest=/etc/ssh/sshd_config backup=yes owner=0 group=0 mode=0644
+  notify:
+    - restart sshd
+
+
