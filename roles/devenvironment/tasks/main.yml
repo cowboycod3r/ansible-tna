@@ -4,14 +4,14 @@
 # install most important packages
 
 - name: install zsh
-  apt: name=zsh state=latest
+  apt: name=zsh state=latest update_cache=yes
 
 - name: switch to zsh
   command: chsh -s /bin/zsh "{{ remote_user }}"
   changed_when: False
 
 - name: install vim
-  apt: name=vim state=latest
+  apt: name=vim state=latest update_cache=yes
 
 - name: install git
   apt: name=git state=latest update_cache=yes

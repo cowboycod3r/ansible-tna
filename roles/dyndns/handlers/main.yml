@@ -1,6 +1,8 @@
 ---
-# common handlers
+# dyndns handlers
 
+- name: restart ddclient
+  service: name=ddclient state=restarted enabled=yes
 
 - name: reboot
   command: reboot

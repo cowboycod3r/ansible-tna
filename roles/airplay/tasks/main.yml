@@ -13,7 +13,7 @@
     - systemcheck
 
 - name: install git
-  apt: name=git state=present update_cache=yes
+  apt: name=git state=present
 
 - name: install libs -> libssl-dev
   apt: name=libssl-dev state=present
