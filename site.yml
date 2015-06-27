@@ -11,8 +11,8 @@
 
 - name: home
   hosts: home
-  roles:
   sudo: yes
+  roles:
     - init
     - devenvironment
     - airplay
