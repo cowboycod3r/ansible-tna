@@ -2,7 +2,7 @@
 # common handlers
 
 - name: restart samba
-  service: name=samba state=restarted enabled=yes
+  service: name=smbd state=restarted enabled=yes
 
 - name: restart avahi
   service: name=avahi-daemon state=restarted enabled=yes

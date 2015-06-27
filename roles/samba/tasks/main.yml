@@ -33,7 +33,7 @@
 - name: samba configuration
   template: src=smb.conf.j2 dest=/etc/samba/smb.conf backup=yes
   notify:
-    - reboot
+    - restart samba
 
 - name: samba service
   service: name=smbd state=started enabled=yes
@@ -46,7 +46,7 @@
 - name: avahi configuration
   template: src=smb.service.j2 dest=/etc/avahi/services/smb.service backup=yes
   notify:
-    - reboot
+    - restart avahi
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
@@ -63,5 +63,3 @@
 
 - name: automout sda1
   lineinfile: dest=/etc/fstab state=present regexp="^/dev/sda1" line="/dev/sda1       /media/hdd1     auto    defaults,noatime  0       0"
-  notify:
-    - reboot

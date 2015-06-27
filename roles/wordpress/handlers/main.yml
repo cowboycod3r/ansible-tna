@@ -1,6 +1,14 @@
 ---
 # common handlers
 
+- name: restart nginx
+  service: name=nginx state=restarted enabled=yes
+
+- name: restart fpm
+  service: name=php5-fpm state=restarted enabled=yes
+
+- name: restart mysql
+  service: name=mysql state=restarted enabled=yes
 
 - name: reboot
   command: reboot

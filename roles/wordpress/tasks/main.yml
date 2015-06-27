@@ -9,7 +9,8 @@
 
 - name: nginx configuration for wordpress
   template: src=default.conf.j2 dest=/etc/nginx/sites-available/default backup=yes
-  notify: reboot
+  notify:
+    - restart nginx
 
 - name: nginx service
   service: name=nginx state=started enabled=yes
@@ -39,7 +40,8 @@
 
 - name: copy php-fpm configuration
   template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf backup=yes
-  notify: reboot
+  notify:
+    - restart fpm
 
 - name: php5-fpm service
   service: name=php5-fpm state=started enabled=yes
@@ -57,7 +59,8 @@
 
 - name: create mysql configuration file
   template: src=my.conf.j2 dest=/etc/my.cnf backup=yes
-  notify: reboot
+  notify:
+    - restart mysql
 
 - name: mysql service
   service: name=mysql state=started enabled=yes

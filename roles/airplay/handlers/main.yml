@@ -1,8 +1,8 @@
 ---
 # airplay handlers
 
-
-
+- name: restart shairport
+  service: name=shairport state=restarted enabled=yes
 
 - name: reboot
   command: reboot

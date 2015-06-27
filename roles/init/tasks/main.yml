@@ -34,17 +34,11 @@
 
 # install most important packages
 
-- name: install zsh
-  apt: name=zsh state=latest
-
 - name: install avahi deamon
   apt: name=avahi-daemon
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
-  tags:
-    - systemcheck
-
 
 
 

@@ -5,17 +5,22 @@
 - name: home
   hosts: home
   roles:
+  sudo: yes
     - init
     - devenvironment
     - airplay
     - pi-wifi
 
+
+
 - name: appserver
   hosts: appserver
+  sudo: yes
   roles:
 
 - name: blogserver
   hosts: blogserver
+  sudo: yes
   roles:
     - init
     - devenvironment
@@ -23,6 +28,7 @@
 
 - name: sambaserver
   hosts: sambaserver
+  sudo: yes
   roles:
     - init
     - devenvironment
