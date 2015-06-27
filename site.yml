@@ -1,6 +1,13 @@
 ---
 # master playbook
 
+- name: sudo
+  hosts: all
+  sudo: no
+  tasks:
+    - name: install sudo
+      apt: name=sudo
+      when: ansible_env.USER == "root"
 
 - name: home
   hosts: home
