@@ -33,7 +33,7 @@
 - name: samba configuration
   template: src=smb.conf.j2 dest=/etc/samba/smb.conf backup=yes
   notify:
-    - restart samba
+    - reboot
 
 - name: samba service
   service: name=smbd state=started enabled=yes
@@ -46,7 +46,7 @@
 - name: avahi configuration
   template: src=smb.service.j2 dest=/etc/avahi/services/smb.service backup=yes
   notify:
-    - restart avahi
+    - reboot
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes

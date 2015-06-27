@@ -10,7 +10,7 @@
 - name: nginx configuration for wordpress
   template: src=default.conf.j2 dest=/etc/nginx/sites-available/default backup=yes
   notify:
-    - restart nginx
+    - reboot
 
 - name: nginx service
   service: name=nginx state=started enabled=yes
@@ -36,12 +36,13 @@
 
 - name: disable default pool
   command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.disabled creates=/etc/php5/fpm/pool.d/www.disabled
-  notify: reboot
+  notify:
+    - reboot
 
 - name: copy php-fpm configuration
   template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf backup=yes
   notify:
-    - restart fpm
+    - reboot
 
 - name: php5-fpm service
   service: name=php5-fpm state=started enabled=yes
@@ -60,7 +61,7 @@
 - name: create mysql configuration file
   template: src=my.conf.j2 dest=/etc/my.cnf backup=yes
   notify:
-    - restart mysql
+    - reboot
 
 - name: mysql service
   service: name=mysql state=started enabled=yes
