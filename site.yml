@@ -7,6 +7,9 @@
   tasks:
     - name: os
       debug: msg="{{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
+      tags:
+        - systemcheck
+
 
     - name: install sudo
       apt: name=sudo
