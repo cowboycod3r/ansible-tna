@@ -6,7 +6,8 @@
   sudo: no
   tasks:
     - name: os
-      debug: msg = "{{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
+      debug: msg="{{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
+
     - name: install sudo
       apt: name=sudo
       when: ansible_env.USER == "root"
