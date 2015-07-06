@@ -37,11 +37,15 @@
 
 - name: samba service
   service: name=smbd state=started enabled=yes
+  when: ansible_distribution_release == "jessie"
   tags:
     - systemcheck
 
-
-
+- name: samba service
+  service: name=samba state=started enabled=yes
+  when: ansible_distribution_release == "wheezy"
+  tags:
+    - systemcheck
 
 - name: avahi configuration
   template: src=smb.service.j2 dest=/etc/avahi/services/smb.service backup=yes
