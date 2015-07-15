@@ -101,6 +101,22 @@
 
 
 
+- name: install avahi deamon
+  apt: name=avahi-daemon
+
+- name: avahi configuration
+  template: src=http.service.j2 dest=/etc/avahi/services/http.service backup=yes
+  notify:
+    - reboot
+
+- name: avahi service
+  service: name=avahi-daemon state=started enabled=yes
+  tags:
+    - systemcheck
+
+
+
+
 
 
 

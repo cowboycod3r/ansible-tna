@@ -32,8 +32,21 @@
 - name: install avahi deamon
   apt: name=avahi-daemon
 
+- name: avahi configuration
+  template: src=ssh.service.j2 dest=/etc/avahi/services/ssh.service backup=yes
+  notify:
+    - reboot
+
+- name: avahi configuration
+  template: src=sftp.service.j2 dest=/etc/avahi/services/sftp.service backup=yes
+  notify:
+    - reboot
+
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
+  tags:
+    - systemcheck
+
 
 
 
