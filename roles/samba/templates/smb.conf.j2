@@ -351,36 +351,6 @@ directory mask = 0771
 read only = no
 guest ok = no
 
-[Dokumente]
-comment = Dokumente
-path = /media/hdd1/dokumente
-valid users = @{{ samba_user }}
-force group = {{ samba_user }}
-create mask = 0660
-directory mask = 0771
-read only = no
-guest ok = no
-
-[Musik]
-comment = Musik
-path = /media/hdd1/musik
-valid users = @{{ samba_user }}
-force group = {{ samba_user }}
-create mask = 0660
-directory mask = 0771
-read only = no
-guest ok = no
-
-[Filme]
-comment = Filme
-path = /media/hdd1/filme
-valid users = @{{ samba_user }}
-force group = {{ samba_user }}
-create mask = 0660
-directory mask = 0771
-read only = no
-guest ok = no
-
 
 
 
