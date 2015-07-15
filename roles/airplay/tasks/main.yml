@@ -75,6 +75,6 @@
 
 
 - name: forces the USB device to become the default audio output device
-  template: src=roles/airplay/files/alsa-base.conf.j2 dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=0644 backup=yes
+  template: src=alsa-base.conf.j2 dest=/etc/modprobe.d/alsa-base.conf owner=0 group=0 mode=0644 backup=yes
   notify:
     - reboot
