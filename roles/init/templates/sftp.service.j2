@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone='no'?>
 <!DOCTYPE service-group SYSTEM "avahi-service.dtd">
 <service-group>
-    <name replace-wildcards="yes">%h</name>
+    <name replace-wildcards="yes">{{ host_name | capitalize }}</name>
     <service>
         <type>_sftp-ssh._tcp</type>
         <port>22</port>
