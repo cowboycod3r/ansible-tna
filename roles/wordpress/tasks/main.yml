@@ -98,6 +98,9 @@
 - name: add php.ini
   template: src=php.ini.j2 dest=/opt/wordpress/php.ini backup=yes
 
+- name: add php.ini
+  template: src=php.ini.j2 dest=/opt/wordpress/wp-admin/php.ini backup=yes
+
 
 
 
