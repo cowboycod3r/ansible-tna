@@ -96,10 +96,10 @@
   file: path=/opt/wordpress/ owner=wordpress group=wordpress state=directory recurse=yes
 
 - name: add php.ini
-  template: src=php.ini.j2 dest=/opt/wordpress/php.ini backup=yes
+  template: src=php.ini.j2 dest=/opt/wordpress/php.ini owner=wordpress group=wordpress backup=yes
 
 - name: add php.ini
-  template: src=php.ini.j2 dest=/opt/wordpress/wp-admin/php.ini backup=yes
+  template: src=php.ini.j2 dest=/opt/wordpress/wp-admin/php.ini owner=wordpress group=wordpress backup=yes
 
 
 
