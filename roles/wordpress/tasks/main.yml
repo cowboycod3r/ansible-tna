@@ -106,7 +106,7 @@
     - restart fpm
 
 - name: set max execution time
-  lineinfile: dest=/etc/php5/fpm/php.ini regexp=^max_execution_time line="max_execution_time = 300"
+  lineinfile: dest=/etc/php5/fpm/php.ini regexp=^max_execution_time line="max_execution_time = 360"
   notify:
     - restart fpm
 
