@@ -97,12 +97,18 @@
 
 - name: set upload max file size
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^upload_max_filesize line="upload_max_filesize = 64M"
+  notify:
+    - restart fpm
 
 - name: set post max  size
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^post_max_size line="post_max_size = 64M"
+  notify:
+    - restart fpm
 
 - name: set max execution time
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^max_execution_time line="max_execution_time = 300"
+  notify:
+    - restart fpm
 
 
 
