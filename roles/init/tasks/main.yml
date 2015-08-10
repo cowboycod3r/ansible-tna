@@ -10,11 +10,13 @@
   hostname: name="{{ host_name }}"
   notify:
     - reboot
+    - waiting for come back
 
 - name: hosts
   lineinfile: dest=/etc/hosts regexp="^127.0.1.1" line="127.0.1.1\t{{ host_name }}"
   notify:
     - reboot
+    - waiting for come back
 
 
 
@@ -35,12 +37,12 @@
 - name: avahi configuration
   template: src=ssh.service.j2 dest=/etc/avahi/services/ssh.service backup=yes
   notify:
-    - reboot
+    - restart avahi
 
 - name: avahi configuration
   template: src=sftp.service.j2 dest=/etc/avahi/services/sftp.service backup=yes
   notify:
-    - reboot
+    - restart avahi
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
@@ -86,5 +88,6 @@
   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config backup=yes owner=0 group=0 mode=0644
   notify:
     - reboot
+    - waiting for come back
 
 

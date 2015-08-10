@@ -11,6 +11,7 @@
   template: src=default.conf.j2 dest=/etc/nginx/sites-available/default backup=yes
   notify:
     - reboot
+    - waiting for come back
 
 - name: nginx service
   service: name=nginx state=started enabled=yes
@@ -38,11 +39,13 @@
   command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.disabled creates=/etc/php5/fpm/pool.d/www.disabled
   notify:
     - reboot
+    - waiting for come back
 
 - name: copy php-fpm configuration
   template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf backup=yes
   notify:
     - reboot
+    - waiting for come back
 
 - name: php5-fpm service
   service: name=php5-fpm state=started enabled=yes
@@ -62,6 +65,7 @@
   template: src=my.conf.j2 dest=/etc/my.cnf backup=yes
   notify:
     - reboot
+    - waiting for come back
 
 - name: mysql service
   service: name=mysql state=started enabled=yes
@@ -120,6 +124,7 @@
   template: src=http.service.j2 dest=/etc/avahi/services/http.service backup=yes
   notify:
     - reboot
+    - waiting for come back
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes

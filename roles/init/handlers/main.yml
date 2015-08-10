@@ -4,6 +4,9 @@
 - name: restart sshd
   service: name=ssh state=restarted enabled=yes
 
+- name: restart avahi
+  service: name=avahi-daemon state=restarted enabled=yes
+
 - name: reboot
   command: reboot
   async: 20
@@ -11,5 +14,5 @@
   ignore_errors: true
 
 - name: waiting for come back
-  local_action: wait_for host={{ inventory_hostname }} state=started
+  local_action: wait_for host={{ inventory_hostname }} port=22 state=started  timeout=120
   sudo: false
