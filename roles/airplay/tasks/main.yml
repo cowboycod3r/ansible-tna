@@ -39,33 +39,33 @@
 
 - name: clone shairport from github
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
-  register: result
+  register: clone_shairport
   notify:
     - reboot
     - waiting for come back
 
 - name: make
   command: make chdir=/opt/shairport
-  when: result|changed
+  when: clone_shairport|changed
 
 - name: make install
   command: make install chdir=/opt/shairport
-  when: result|changed
+  when: clone_shairport|changed
 
 
 
 
 - name: init.d copy
   command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
-  when: result|changed
+  when: clone_shairport|changed
 
 - name: init.d permissions
   file: path=/etc/init.d/shairport mode=0755
-  when: result|changed
+  when: clone_shairport|changed
 
 - name: update-rc.d
   command: update-rc.d shairport defaults
-  when: result|changed
+  when: clone_shairport|changed
 
 - name: change AP Name
   lineinfile: dest=/etc/init.d/shairport regexp=^AP_NAME= line=AP_NAME={{ host_name | capitalize }}

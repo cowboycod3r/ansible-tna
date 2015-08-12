@@ -77,9 +77,19 @@
 
 - name: download wordpress
   get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/opt/wordpress-{{ wp_version }}.tar.gz
+  register: download_wordpress
+
+- name: update wordpress (delete wp-includes)
+  command: chdir=/opt/wordpress rm -rf wp-includes
+  when: download_wordpress|changed
+
+- name: update wordpress (delete wp-admin)
+  command: chdir=/opt/wordpress rm -rf wp-admin
+  when: download_wordpress|changed
 
 - name: extract archive
-  command: chdir=/opt/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/opt/wordpress
+  command: chdir=/opt/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz
+  when: download_wordpress|changed
 
 - name: add group "wordpress"
   group: name=wordpress
