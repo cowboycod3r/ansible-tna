@@ -2,8 +2,6 @@
 # tasks for samba
 
 
-
-
 - name: install samba
   apt: name=samba
 

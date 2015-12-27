@@ -341,6 +341,16 @@ directory mask = 0771
 read only = no
 guest ok = no
 
+[Dokumente]
+comment = Dokumente
+path = /media/hdd1/dokumente
+valid users = @{{ samba_user }}
+force group = {{ samba_user }}
+create mask = 0660
+directory mask = 0771
+read only = no
+guest ok = no
+
 [Backups]
 comment = Backups
 path = /media/hdd1/backups
