@@ -61,15 +61,13 @@
 - name: install MySQL-python (python-mysqldb)
   apt: name=python-mysqldb
 
-- name: update mysql root passwords for localhost
-  mysql_user: name=root host=localhost password={{ mysql_root_password }}
-
 - name: update mysql root passwords for other hosts
   mysql_user: name=root host={{ item }} password={{ mysql_root_password }} login_password={{ mysql_root_password }}
   with_items:
     - "{{ ansible_hostname }}"
     - 127.0.0.1
     - ::1
+    - localhost
 
 - name: create mysql configuration file
   template: src=my.conf.j2 dest=/etc/my.cnf backup=yes
