@@ -62,7 +62,7 @@
   apt: name=python-mysqldb
 
 - name: update mysql root passwords for other hosts
-  mysql_user: name=root host={{ item }} password={{ mysql_root_password }} login_password={{ mysql_root_password }}
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }} login_user=root login_password={{ mysql_root_password }}
   with_items:
     - "{{ ansible_hostname }}"
     - 127.0.0.1
