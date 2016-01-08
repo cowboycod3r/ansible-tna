@@ -106,10 +106,10 @@
   user: name=wordpress group=wordpress home=/opt/wordpress/
 
 - name: create wordpress database
-  mysql_db: name={{ wp_db_name }} state=present
+  mysql_db: name={{ wp_db_name }} state=present login_user=root login_password={{ mysql_root_password }}
 
 - name: create wordpress database user
-  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present  login_user=root login_password={{ mysql_root_password }}
 
 - name: copy wordpress config file
   template: src=wp-config.php.j2 dest=/opt/wordpress/wp-config.php backup=yes
