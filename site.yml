@@ -23,12 +23,11 @@
     - airplay
     - pi-wifi
 
-
-
 - name: appserver
   hosts: appserver
   sudo: yes
   roles:
+    - init
 
 - name: blogserver
   hosts: blogserver

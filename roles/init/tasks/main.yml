@@ -6,13 +6,13 @@
 
 # hostname
 
-- name: hostname
+- name: set the hostname
   hostname: name="{{ host_name }}"
   notify:
     - reboot
     - waiting for come back
 
-- name: hosts
+- name: update hosts file
   lineinfile: dest=/etc/hosts regexp="^127.0.1.1" line="127.0.1.1\t{{ host_name }}"
   notify:
     - reboot
@@ -23,7 +23,7 @@
 
 # system update
 
-- name: update the system
+- name: update all system components
   apt: update_cache=yes upgrade=yes
 
 
@@ -31,15 +31,15 @@
 
 # install most important packages
 
-- name: install avahi deamon
+- name: install avahi deamon to become visible in the network
   apt: name=avahi-daemon
 
-- name: avahi configuration
+- name: update the avahi configuration for ssh
   template: src=ssh.service.j2 dest=/etc/avahi/services/ssh.service backup=yes
   notify:
     - restart avahi
 
-- name: avahi configuration
+- name: update the avahi configuration for sftp
   template: src=sftp.service.j2 dest=/etc/avahi/services/sftp.service backup=yes
   notify:
     - restart avahi
@@ -59,7 +59,7 @@
 - name: create me as new user
   user: name={{ me }} shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
 
-- name: check owner of my home dir
+- name: check the owner of my home dir
   file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
 
 - name: install my public key for me
@@ -73,10 +73,10 @@
 
 # provide public keys for remote user
 
-- name: install current public key for remote user
+- name: provide public key for the current remote user
   authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
 
-- name: install my public key for remote user
+- name: provide my public key for the remote user too
   authorized_key: user="{{ remote_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
 
 
@@ -84,7 +84,7 @@
 
 # update sshd configuration
 
-- name: sshd configuration file
+- name: update the sshd configuration file to avoid login with password
   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config backup=yes owner=0 group=0 mode=0644
   notify:
     - reboot
