@@ -7,7 +7,7 @@
   apt: name=zsh state=latest
 
 - name: switch to zsh
-  command: chsh -s /bin/zsh "{{ remote_user }}"
+  command: chsh -s /bin/zsh "{{ ansible_ssh_user }}"
   changed_when: False
 
 - name: install vim

@@ -74,10 +74,10 @@
 # provide public keys for remote user
 
 - name: provide public key for the current remote user
-  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
+  authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
 
 - name: provide my public key for the remote user too
-  authorized_key: user="{{ remote_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
+  authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
 
 
 
