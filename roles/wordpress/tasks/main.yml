@@ -55,16 +55,29 @@
 
 
 
-- name: install mysql-server
+- name: install mysql database
   apt: name=mysql-server
+  register: mysql
 
 - name: install MySQL-python (python-mysqldb)
   apt: name=python-mysqldb
 
-- name: update mysql root passwords for other hosts
+- name: update mysql root passwords for other hosts using login password
   mysql_user: name=root host={{ item }} password={{ mysql_root_password }} login_user=root login_password={{ mysql_root_password }}
+  when: mysql|changed == false
   with_items:
     - "{{ ansible_hostname }}"
+    - "{{ host_name }}"
+    - 127.0.0.1
+    - ::1
+    - localhost
+
+- name: update mysql root passwords for other hosts using no password
+  mysql_user: name=root host={{ item }} password={{ mysql_root_password }}
+  when: mysql|changed == true
+  with_items:
+    - "{{ ansible_hostname }}"
+    - "{{ host_name }}"
     - 127.0.0.1
     - ::1
     - localhost
@@ -74,6 +87,7 @@
   with_items:
     - localhost
     - "{{ ansible_hostname }}"
+    - "{{ host_name }}"
 
 - name: remove the test database
   mysql_db: name=test state=absent login_user=root login_password={{ mysql_root_password }}
