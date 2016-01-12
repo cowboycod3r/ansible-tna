@@ -20,20 +20,14 @@
 
 
 
-- name: install php5-fpm
-  apt: name=php5-fpm
-
-- name: install php5-mysql
-  apt: name=php5-mysql
-
-- name: install php5-gd
-  apt: name=php5-gd
-
-- name: install php5-curl
-  apt: name=php5-curl
-
-- name: install php(5)-apc
-  apt: name=php-apc
+- name: install php5
+  apt: name={{ item }}
+  with_items:
+    - php5-fpm
+    - php5-mysql
+    - php5-gd
+    - php5-curl
+    - php-apc
 
 - name: disable default pool
   command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.disabled creates=/etc/php5/fpm/pool.d/www.disabled
@@ -105,18 +99,20 @@
 
 
 
+- name: creare wordpress dir
+  command: mkdir -p /opt/wordpress
+  changed_when: False
 
 - name: download wordpress
   get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/opt/wordpress-{{ wp_version }}.tar.gz
   register: download_wordpress
 
-- name: update wordpress (delete wp-includes)
-  command: chdir=/opt/wordpress rm -rf wp-includes
+- name: update wordpress (delete wp-includes and wp-admin)
+  command: chdir=/opt/wordpress rm -rf {{ item }}
   when: download_wordpress|changed
-
-- name: update wordpress (delete wp-admin)
-  command: chdir=/opt/wordpress rm -rf wp-admin
-  when: download_wordpress|changed
+  with_items:
+    - wp-includes
+    - wp-admin
 
 - name: extract archive
   command: chdir=/opt/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz
