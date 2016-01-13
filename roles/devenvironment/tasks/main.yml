@@ -4,17 +4,17 @@
 # install most important packages
 
 - name: install zsh
-  apt: name=zsh state=latest
+  apt: name={{ item }} state=latest
+  with_items:
+    - zsh
+    - vim
+    - git
+    - nmap
 
 - name: switch to zsh
   command: chsh -s /bin/zsh "{{ ansible_ssh_user }}"
   changed_when: False
 
-- name: install vim
-  apt: name=vim state=latest
-
-- name: install git
-  apt: name=git state=latest
 
 
 
