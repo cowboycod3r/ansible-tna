@@ -28,6 +28,9 @@
 - name: blogserver
   hosts: blogserver
   sudo: yes
+  vars:
+    blog_names_list: "{{ blog_names.split(',') }}"
+
   roles:
     - init
     - devenvironment

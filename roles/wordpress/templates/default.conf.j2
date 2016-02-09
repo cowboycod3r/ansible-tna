@@ -2,20 +2,21 @@ server {
 
         listen       80 default_server;
         server_name  {{ host_name }};
-        root /opt/wordpress/ ;
+        root /var/www/;
  
         client_max_body_size 64M;
- 
-	    # Deny access to any files with a .php extension in the uploads directory
-        location ~* /(?:uploads|files)/.*\.php$ {
-                deny all;
-        }
- 
+
         location / {
-                index index.php index.html index.htm;
-                try_files $uri $uri/ /index.php?$args;
+                 index index.php index.html index.htm;
         }
- 
+
+{% for blog_name in blog_names_list %}
+        location /{{ blog_name }} {
+                index index.php index.html index.htm;
+                try_files $uri $uri/ /{{ blog_name }}/index.php?$args;
+        }
+{% endfor %}
+
         location ~* \.(gif|jpg|jpeg|png|css|js)$ {
                 expires max;
         }
@@ -29,4 +30,10 @@ server {
                                 $document_root$fastcgi_script_name;
                 include       fastcgi_params;
         }
+
+        # Deny access to any files with a .php extension in the uploads directory
+        location ~* /(?:uploads|files)/.*\.php$ {
+                deny all;
+        }
+
 }
