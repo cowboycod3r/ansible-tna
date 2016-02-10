@@ -43,6 +43,11 @@ server {
                 deny  all;
         }
 
+        # Deny access to wordpress downloaded files
+        location ~ /wordpress-\d\.\d\.\d\.tar\.gz {
+                deny  all;
+        }
+
         location = /favicon.ico {
                 log_not_found off;
                 access_log off;

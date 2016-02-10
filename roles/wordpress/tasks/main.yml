@@ -94,7 +94,8 @@
   tags:
     - systemcheck
 
-
+- name: no html folder
+  file: path=/var/www/html state=absent
 
 - name: blog dirs
   file: path=/var/www/{{ item }} state=directory
