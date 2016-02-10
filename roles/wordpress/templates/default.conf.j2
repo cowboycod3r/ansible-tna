@@ -17,9 +17,6 @@ server {
         }
 {% endfor %}
 
-        location ~* \.(gif|jpg|jpeg|png|css|js)$ {
-                expires max;
-        }
 
         location ~ \.php$ {
                 try_files $uri =404;
@@ -31,9 +28,30 @@ server {
                 include       fastcgi_params;
         }
 
+        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                expires 24h;
+                log_not_found off;
+        }
+
         # Deny access to any files with a .php extension in the uploads directory
         location ~* /(?:uploads|files)/.*\.php$ {
                 deny all;
+        }
+
+        # Deny access to . files, if Apache's document root
+        location ~ /\. {
+                deny  all;
+        }
+
+        location = /favicon.ico {
+                log_not_found off;
+                access_log off;
+        }
+
+        location = /robots.txt {
+                allow all;
+                log_not_found off;
+                access_log off;
         }
 
 }
