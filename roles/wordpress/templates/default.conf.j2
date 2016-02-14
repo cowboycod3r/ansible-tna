@@ -20,8 +20,6 @@ ssl_session_timeout     10m;
                 server_name             {{ host_name }};
                 root                    /var/www/;
 
-                keepalive_timeout	30;
-
                 ssl_certificate		    /etc/nginx/ssl/gna13.de.crt;
                 ssl_certificate_key 	/etc/nginx/ssl/gna13.de.key;
 
