@@ -1,4 +1,4 @@
 ANSIBLE TNA
 ===========
 
-This is a ansible playground.  
+This is a ansible playground.  :)
