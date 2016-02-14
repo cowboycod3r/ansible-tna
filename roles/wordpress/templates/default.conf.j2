@@ -1,69 +1,84 @@
-server {
 
-        listen                  80 default_server;
-        listen                  443 ssl;
-        server_name             {{ host_name }};
-        root                    /var/www/;
+# global setting (inside html in nginx.conf)
 
- 		ssl_certificate		    /etc/nginx/ssl/www.gna13.de.crt;
-		ssl_certificate_key 	/etc/nginx/ssl/www.gna13.de.key;
-
-        client_max_body_size    64M;
+ssl_session_cache       shared:SSL:10m;
+ssl_session_timeout     10m;
 
 
+        server {
 
+                # redirect to 443
+                listen                  80 default_server;
+                server_name             {{ host_name }};
+                return                  301 https://$host$request_uri;
 
-        location / {
-                 index index.php index.html index.htm;
         }
 
-{% for blog_name in blog_names_list %}
-        location /{{ blog_name }} {
-                index index.php index.html index.htm;
-                try_files $uri $uri/ /{{ blog_name }}/index.php?$args;
+        server {
+
+                listen                  443 ssl;
+                server_name             {{ host_name }};
+                root                    /var/www/;
+
+                keepalive_timeout	30;
+
+                ssl_certificate		    /etc/nginx/ssl/gna13.de.crt;
+                ssl_certificate_key 	/etc/nginx/ssl/gna13.de.key;
+
+                client_max_body_size    64M;
+
+
+                location / {
+                         index index.php index.html index.htm;
+                }
+
+        {% for blog_name in blog_names_list %}
+                location /{{ blog_name }} {
+                        index index.php index.html index.htm;
+                        try_files $uri $uri/ /{{ blog_name }}/index.php?$args;
+                }
+        {% endfor %}
+
+
+                location ~ \.php$ {
+                        try_files $uri =404;
+                        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                        fastcgi_index index.php;
+                        fastcgi_pass  unix:/var/run/wordpress.sock;
+                        fastcgi_param   SCRIPT_FILENAME
+                                        $document_root$fastcgi_script_name;
+                        include       fastcgi_params;
+                }
+
+                location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+                        expires 24h;
+                        log_not_found off;
+                }
+
+                # Deny access to any files with a .php extension in the uploads directory
+                location ~* /(?:uploads|files)/.*\.php$ {
+                        deny all;
+                }
+
+                # Deny access to . files
+                location ~ /\. {
+                        deny  all;
+                }
+
+                # Deny access to wordpress downloaded files
+                location ~ /wordpress-\d\.\d\.\d\.tar\.gz {
+                        deny  all;
+                }
+
+                location = /favicon.ico {
+                        log_not_found off;
+                        access_log off;
+                }
+
+                location = /robots.txt {
+                        allow all;
+                        log_not_found off;
+                        access_log off;
+                }
+
         }
-{% endfor %}
-
-
-        location ~ \.php$ {
-                try_files $uri =404;
-                fastcgi_split_path_info ^(.+\.php)(/.+)$;
-                fastcgi_index index.php;
-                fastcgi_pass  unix:/var/run/wordpress.sock;
-                fastcgi_param   SCRIPT_FILENAME
-                                $document_root$fastcgi_script_name;
-                include       fastcgi_params;
-        }
-
-        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-                expires 24h;
-                log_not_found off;
-        }
-
-        # Deny access to any files with a .php extension in the uploads directory
-        location ~* /(?:uploads|files)/.*\.php$ {
-                deny all;
-        }
-
-        # Deny access to . files
-        location ~ /\. {
-                deny  all;
-        }
-
-        # Deny access to wordpress downloaded files
-        location ~ /wordpress-\d\.\d\.\d\.tar\.gz {
-                deny  all;
-        }
-
-        location = /favicon.ico {
-                log_not_found off;
-                access_log off;
-        }
-
-        location = /robots.txt {
-                allow all;
-                log_not_found off;
-                access_log off;
-        }
-
-}
