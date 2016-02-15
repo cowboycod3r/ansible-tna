@@ -10,6 +10,12 @@
     - reboot
     - waiting for come back
 
+- name: nginx basic auth
+  template: src=htpasswd.j2 dest=/etc/nginx/.htpasswd backup=yes
+  notify:
+    - reboot
+    - waiting for come back
+
 - name: nginx service
   service: name=nginx state=started enabled=yes
   tags:
