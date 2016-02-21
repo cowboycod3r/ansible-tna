@@ -37,18 +37,24 @@
 - name: update the avahi configuration for ssh
   template: src=ssh.service.j2 dest=/etc/avahi/services/ssh.service backup=yes
   notify:
-    - restart avahi
+    - reboot
+    - waiting for come back
 
 - name: update the avahi configuration for sftp
   template: src=sftp.service.j2 dest=/etc/avahi/services/sftp.service backup=yes
   notify:
-    - restart avahi
+    - reboot
+    - waiting for come back
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
   tags:
     - systemcheck
 
+- name: install needed libs
+  apt: name={{ item }} state=latest
+  with_items:
+    - python-passlib
 
 
 

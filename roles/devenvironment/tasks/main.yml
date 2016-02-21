@@ -3,7 +3,7 @@
 
 # install most important packages
 
-- name: install zsh
+- name: install tools
   apt: name={{ item }} state=latest
   with_items:
     - zsh

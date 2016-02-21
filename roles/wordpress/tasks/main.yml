@@ -11,10 +11,15 @@
     - waiting for come back
 
 - name: nginx basic auth
-  template: src=htpasswd.j2 dest=/etc/nginx/.htpasswd backup=yes
+  htpasswd: path=/etc/nginx/.htpasswd name={{ item.name }} password={{ item.passwd }} mode=0644
+  with_items:
+    - { name: 'andre', passwd: 'tigger' }
+    - { name: 'nadine', passwd: 'winnie' }
   notify:
     - reboot
     - waiting for come back
+
+
 
 - name: nginx service
   service: name=nginx state=started enabled=yes

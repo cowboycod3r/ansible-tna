@@ -10,8 +10,8 @@
       tags:
         - systemcheck
 
-- name: home
-  hosts: home
+- name: autohome
+  hosts: autohome
   sudo: yes
   roles:
     - init
@@ -25,8 +25,8 @@
   roles:
     - init
 
-- name: blogserver
-  hosts: blogserver
+- name: wordpress
+  hosts: wordpress
   sudo: yes
   vars:
     blog_names_list: "{{ blog_names.split(',') }}"
