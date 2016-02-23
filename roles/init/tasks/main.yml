@@ -51,7 +51,7 @@
   tags:
     - systemcheck
 
-- name: install needed libs
+- name: install libs
   apt: name={{ item }} state=latest
   with_items:
     - python-passlib
