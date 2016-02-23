@@ -12,14 +12,10 @@
 
 - name: nginx basic auth
   htpasswd: path=/etc/nginx/.htpasswd name={{ item.name }} password={{ item.passwd }} mode=0644
-  with_items:
-    - { name: 'andre', passwd: 'tigg3r.w0rdpr3ss' }
-    - { name: 'nadine', passwd: 'winni3.w0rdpr3ss' }
+  with_items: "{{ basic_auth_users }}"
   notify:
     - reboot
     - waiting for come back
-
-
 
 - name: nginx service
   service: name=nginx state=started enabled=yes

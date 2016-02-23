@@ -29,7 +29,7 @@
 
   # use 'mkpasswd --method=SHA-512' to generate hash
 - name: create shairport user
-  user: name=shairport password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
+  user: name=shairport password={{ unix_default_password_hash }}
 
 - name: install my public key for shairport user
   authorized_key: user=shairport key="{{ lookup('file', me_key) }}" manage_dir=yes

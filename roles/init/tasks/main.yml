@@ -63,7 +63,7 @@
 
   # use mkpasswd --method=SHA-512 to generate hash
 - name: create me as new user
-  user: name={{ me }} shell=/bin/zsh password=$6$x93fHZM89Y$Pf2LYXMuCAyaSwrK3Z85rqM62AJnVJkh1aCMVzma66XGXdzN3/irYIBDgdPZ/HRPqpcLijKbZfxTa5Pig43np0
+  user: name={{ me }} shell=/bin/zsh password={{ unix_default_password_hash }}
 
 - name: check the owner of my home dir
   file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
