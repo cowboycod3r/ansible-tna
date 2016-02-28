@@ -1,8 +1,7 @@
 ANSIBLE TNA
 ===========
 
-This is my ansible playground. Currently only tested and used with raspberry pi's and debian. :)
-
+This is my ansible playground. Only tested and used with raspberry pi's and debian. :)
 
 
 Roles
