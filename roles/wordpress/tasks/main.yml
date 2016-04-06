@@ -4,6 +4,15 @@
 - name: install nginx
   apt: name=nginx
 
+- name: blog dirs
+  file: path=/etc/nginx/ssl state=directory
+
+- name: create certificate
+  command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/{{ host_name }}.key -out /etc/nginx/ssl/{{ host_name }}.crt -subj "/C=DE/ST=Bavaria/L=Munich/CN={{ host_name }}"
+  notify:
+    - reboot
+    - waiting for come back
+
 - name: nginx configuration for wordpress
   template: src=default.conf.j2 dest=/etc/nginx/sites-available/default backup=yes
   notify:
