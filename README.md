@@ -12,3 +12,5 @@ Roles
 - wifi for raspberry pi
 - samba server
 - wordpress + nginx + mysql
+
+more comming soon...
