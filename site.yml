@@ -1,9 +1,9 @@
 ---
 # master playbook
 
-- name: sudo
+- name: os
   hosts: all
-  sudo: no
+  become: no
   tasks:
     - name: os
       debug: msg="{{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
@@ -12,7 +12,7 @@
 
 - name: autohome
   hosts: autohome
-  sudo: yes
+  become: yes
   roles:
     - init
     - devenvironment
@@ -21,13 +21,13 @@
 
 - name: appserver
   hosts: appserver
-  sudo: yes
+  become: yes
   roles:
     - init
 
 - name: wordpress
   hosts: wordpress
-  sudo: yes
+  become: yes
   vars:
     blog_names_list: "{{ blog_names.split(',') }}"
   roles:
@@ -37,7 +37,7 @@
 
 - name: sambaserver
   hosts: sambaserver
-  sudo: yes
+  become: yes
   roles:
     - init
     - devenvironment
