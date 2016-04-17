@@ -71,6 +71,11 @@ ssl_session_timeout     10m;
                         deny  all;
                 }
 
+                # Deny access to sql files
+                location ~* \.sql$ {
+                        deny  all;
+                }
+
                 location = /favicon.ico {
                         log_not_found off;
                         access_log off;
