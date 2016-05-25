@@ -331,29 +331,9 @@
 ;   preexec = /bin/mount /cdrom
 ;   postexec = /bin/umount /cdrom
 
-[Bilder]
-comment = Bilder
-path = /media/hdd1/bilder
-valid users = @{{ samba_user }}
-force group = {{ samba_user }}
-create mask = 0660
-directory mask = 0771
-read only = no
-guest ok = no
-
-[Netzwerklaufwerk]
-comment = Netzwerklaufwerk
-path = /media/hdd1/netzwerklaufwerk
-valid users = @{{ samba_user }}
-force group = {{ samba_user }}
-create mask = 0660
-directory mask = 0771
-read only = no
-guest ok = no
-
-[Backups]
-comment = Backups
-path = /media/hdd1/backups
+[Netzlaufwerk]
+comment = Netzlaufwerk
+path = /media/hdd1/netzlaufwerk
 valid users = @{{ samba_user }}
 force group = {{ samba_user }}
 create mask = 0660
