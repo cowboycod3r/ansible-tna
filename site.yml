@@ -24,6 +24,7 @@
   become: yes
   roles:
     - init
+    - devenvironment
 
 - name: wordpress
   hosts: wordpress
