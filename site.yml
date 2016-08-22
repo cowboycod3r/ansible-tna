@@ -10,22 +10,30 @@
       tags:
         - systemcheck
 
+# idle server (could be used for jenkins slaves)
+- name: autobot
+  hosts: autobot
+  become: yes
+  roles:
+    - init
+
+# home automation
 - name: autohome
   hosts: autohome
   become: yes
   roles:
     - init
-    - devenvironment
     - airplay
     - pi-wifi
 
+# application server
 - name: appserver
   hosts: appserver
   become: yes
   roles:
     - init
-    - devenvironment
 
+# multi blog server with wordpress
 - name: wordpress
   hosts: wordpress
   become: yes
@@ -33,14 +41,5 @@
     blog_names_list: "{{ blog_names.split(',') }}"
   roles:
     - init
-    - devenvironment
     - wordpress
 
-- name: sambaserver
-  hosts: sambaserver
-  become: yes
-  roles:
-    - init
-    - devenvironment
-    - samba
-    - dyndns
