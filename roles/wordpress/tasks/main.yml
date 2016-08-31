@@ -4,7 +4,7 @@
 - name: install nginx
   apt: name=nginx
 
-- name: blog dirs
+- name: ssl dir for certificates
   file: path=/etc/nginx/ssl state=directory
 
 - name: create certificate
