@@ -1,6 +1,10 @@
 ---
 # master playbook
 
+
+
+
+# get os
 - name: os
   hosts: all
   become: no
@@ -11,8 +15,8 @@
         - systemcheck
 
 # idle server (could be used for jenkins slaves)
-- name: autobot
-  hosts: autobot
+- name: idle
+  hosts: idle
   become: yes
   roles:
     - init
@@ -43,3 +47,12 @@
     - init
     - wordpress
 
+# testing all roles
+- name: testing
+  hosts: testing
+  become: yes
+  roles:
+    - init
+    - airplay
+    - pi-wifi
+    - wordpress
