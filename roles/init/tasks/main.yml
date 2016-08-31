@@ -38,6 +38,7 @@
     - vim
     - git
     - nmap
+    - build-essential
 
 - name: switch to zsh
   command: chsh -s /bin/zsh "{{ ansible_ssh_user }}"
