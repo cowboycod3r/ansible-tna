@@ -17,6 +17,6 @@ stage 'deployment'
 node {
     echo "deployment..."
     checkout scm
-    sh "ansible-playbook site.yml"
+    sh "ansible-playbook -vvvv site.yml"
     echo "deployment done."
 }
