@@ -34,7 +34,7 @@ gzip_types              text/css text/x-component application/x-javascript appli
                          index index.php index.html index.htm;
                 }
 
-        {% for blog_name in blog_names_list %}
+        {% for blog_name in blog_names %}
                 location /{{ blog_name }} {
                         index index.php index.html index.htm;
                         try_files $uri $uri/ /{{ blog_name }}/index.php?$args;

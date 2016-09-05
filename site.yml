@@ -20,6 +20,7 @@
   become: yes
   roles:
     - init
+    - dyndns
 
 # home automation
 - name: autohome
@@ -41,8 +42,6 @@
 - name: wordpress
   hosts: wordpress
   become: yes
-  vars:
-    blog_names_list: "{{ blog_names.split(',') }}"
   roles:
     - init
     - wordpress
@@ -51,10 +50,9 @@
 - name: testing
   hosts: testing
   become: yes
-  vars:
-    blog_names_list: "{{ blog_names.split(',') }}"
   roles:
     - init
     - airplay
     - pi-wifi
+    - dyndns
     - wordpress
