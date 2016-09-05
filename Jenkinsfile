@@ -15,8 +15,14 @@ node {
 
 stage 'deployment'
 node {
-    echo "deployment..."
+
+    /* check out current state on the node */
     checkout scm
-    ansiblePlaybook(playbook: 'site.yml', inventory: "/etc/ansible/hosts-${env.BRANCH_NAME}")
-    echo "deployment done."
+
+    /* Colorized Console Log */
+    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
+
+        /* execute ansible */
+        ansiblePlaybook(playbook: 'site.yml', inventory: "/etc/ansible/hosts-${env.BRANCH_NAME}")
+    }
 }
