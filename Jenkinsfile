@@ -23,6 +23,6 @@ node {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
         /* execute ansible */
-        ansiblePlaybook(playbook: 'site.yml', inventory: "/etc/ansible/hosts-${env.BRANCH_NAME}")
+        ansiblePlaybook(playbook: 'site.yml', inventory: "/etc/ansible/hosts-${env.BRANCH_NAME}", colorized: true)
     }
 }
