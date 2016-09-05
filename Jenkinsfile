@@ -17,6 +17,6 @@ stage 'deployment'
 node {
     echo "deployment..."
     checkout scm
-    sh "ansible-playbook -vvvv site.yml"
+    ansiblePlaybook(playbook: 'site.yml', inventory: "/etc/ansible/hosts-${BRANCH_NAME}")
     echo "deployment done."
 }
