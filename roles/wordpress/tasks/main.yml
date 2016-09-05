@@ -115,7 +115,7 @@
 
 - name: blog dirs
   file: path=/var/www/{{ item }} state=directory
-  with_items: "{{ blog_names_list }}"
+  with_items: "{{ blog_names }}"
   register: blog_dirs
 
 - name: get wordpress
@@ -126,7 +126,7 @@
   command: chdir=/var/www/{{ item[0] }} rm -rf {{ item[1] }}
   when: get_wordpress|changed
   with_nested:
-    - "{{ blog_names_list }}"
+    - "{{ blog_names }}"
     - ['wp-includes', 'wp-admin']
 
 - name: extract archive
@@ -135,7 +135,7 @@
 
 - name: copy wordpress to subfolders
   command: chdir=/var/www/wordpress cp -r . ../{{ item }}
-  with_items: "{{ blog_names_list }}"
+  with_items: "{{ blog_names }}"
   when: get_wordpress|changed or blog_dirs|changed
 
 - name: clean wordpress dir
@@ -150,19 +150,19 @@
 
 - name: create wordpress database
   mysql_db: name=wp_{{ item }} state=present login_user=root login_password={{ mysql_root_password }}
-  with_items: "{{ blog_names_list }}"
+  with_items: "{{ blog_names }}"
 
 - name: create wordpress database user
   mysql_user: name=wp_{{ item }} password={{ wp_db_password }} priv=wp_{{ item }}.*:ALL host='localhost' state=present  login_user=root login_password={{ mysql_root_password }}
-  with_items: "{{ blog_names_list }}"
+  with_items: "{{ blog_names }}"
 
 - name: copy wordpress config file
   template: src=wp-config.php.j2 dest=/var/www/{{ item }}/wp-config.php backup=yes
-  with_items: "{{ blog_names_list }}"
+  with_items: "{{ blog_names }}"
 
 - name: change ownership of wordpress installation
   file: path=/var/www/{{ item }}/ owner=wordpress group=wordpress state=directory recurse=yes
-  with_items: "{{ blog_names_list }}"
+  with_items: "{{ blog_names }}"
 
 - name: set upload max file size
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^upload_max_filesize line="upload_max_filesize = 64M"
