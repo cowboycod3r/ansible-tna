@@ -1,6 +1,6 @@
-stage 'init'
+stage 'update inventory'
 node {
-    echo "do something init stuff"
+    echo "update the inventory"
 }
 
 stage 'test clean VM'

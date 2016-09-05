@@ -20,6 +20,7 @@
   become: yes
   roles:
     - init
+    - dyndns
 
 # home automation
 - name: autohome
@@ -53,4 +54,5 @@
     - init
     - airplay
     - pi-wifi
+    - dyndns
     - wordpress
