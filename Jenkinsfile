@@ -1,11 +1,11 @@
 stage 'update inventory'
 node {
     echo "---- update the inventory ----"
-    sh pwd
+    sh ls
     dir('/etc/ansible') {
-        sh pwd
+        sh ls
     }
-    sh pwd
+    sh ls
     echo "---- update the inventory done"
 }
 
