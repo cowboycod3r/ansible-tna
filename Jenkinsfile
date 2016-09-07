@@ -1,14 +1,20 @@
 stage 'update inventory'
 node {
-    echo "update the inventory"
+    echo "---- update the inventory ----"
+    pwd
+    dir('/etc/ansible') {
+        pwd
+    }
+    pwd
+    echo "---- update the inventory done"
 }
 
-stage 'test clean VM'
+stage 'test: clean VM'
 node {
     echo "test clean VM"
 }
 
-stage 'test existing VM'
+stage 'test: existing VM'
 node {
     echo "test existing VM"
 }
