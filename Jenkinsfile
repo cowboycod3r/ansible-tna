@@ -1,22 +1,16 @@
 stage 'update inventory'
 node {
-    echo "---- update the inventory ----"
-    sh 'pwd'
-    dir('/etc/ansible') {
-        sh 'pwd'
-    }
-    sh 'pwd'
-    echo "---- update the inventory done"
+    echo "execute tna-ansible-etc"
 }
 
 stage 'test: clean VM'
 node {
-    echo "test clean VM"
+    echo "stop, reset, start, execute, stop"
 }
 
 stage 'test: existing VM'
 node {
-    echo "test existing VM"
+    echo "start, execute, stop"
 }
 
 stage 'deployment'
