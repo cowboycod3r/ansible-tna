@@ -1,16 +1,16 @@
 stage 'update inventory'
 node {
-    echo "update the inventory"
+    echo "execute tna-ansible-etc"
 }
 
-stage 'test clean VM'
+stage 'test: clean VM'
 node {
-    echo "test clean VM"
+    echo "stop, reset, start, execute, stop"
 }
 
-stage 'test existing VM'
+stage 'test: existing VM'
 node {
-    echo "test existing VM"
+    echo "start, execute, stop"
 }
 
 stage 'deployment'
