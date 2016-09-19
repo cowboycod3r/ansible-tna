@@ -1,5 +1,5 @@
 stage 'update inventory'
-node ('master') {
+node ('bla') {
     echo "execute tna-ansible-etc"
 }
 
