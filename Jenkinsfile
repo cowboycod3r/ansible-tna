@@ -1,6 +1,6 @@
 stage 'update inventory'
 node ('master') {
-    echo "execute tna-ansible-etc"
+    build 'tna-ansible-etc'
 }
 
 stage 'test: clean VM'
