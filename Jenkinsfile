@@ -9,7 +9,7 @@ node ('virtualbox') {
 }
 
 stage 'test: existing VM'
-node 'virtualbox' {
+node ('virtualbox') {
     echo "start, execute, stop"
 }
 
