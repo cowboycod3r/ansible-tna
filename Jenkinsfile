@@ -1,4 +1,4 @@
-stage 'update inventory'
+stage 'init: update inventory'
 node ('master') {
     build 'tna-ansible-etc'
 }
