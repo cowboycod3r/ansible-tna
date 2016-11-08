@@ -1,3 +1,5 @@
+#!groovy​
+
 stage 'init: update inventory'
 node ('master') {
     build 'tna-ansible-etc'
@@ -6,15 +8,19 @@ node ('master') {
 stage 'test: clean VM'
 node ('virtualbox') {
     echo "stop, reset, start, execute, stop"
+    echo "execute only the testing group"
 }
 
 stage 'test: existing VM'
 node ('virtualbox') {
     echo "start, execute, stop"
+    echo "execute only the testing group"
 }
 
 stage 'deployment'
 node {
+
+    echo "execute all other groups with testing group"
 
     /* check out current state on the node */
     checkout scm
