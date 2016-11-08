@@ -6,19 +6,19 @@ node ('master') {
 }
 
 stage 'test: clean VM'
-node ('virtualbox') {
+node ('master') {
     echo "stop, reset, start, execute, stop"
     echo "execute only the testing group"
 }
 
 stage 'test: existing VM'
-node ('virtualbox') {
+node ('master') {
     echo "start, execute, stop"
     echo "execute only the testing group"
 }
 
 stage 'deployment'
-node {
+node ('master') {
 
     echo "execute all other groups with testing group"
 
