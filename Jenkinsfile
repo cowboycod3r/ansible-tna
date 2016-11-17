@@ -2,7 +2,7 @@
 
 stage 'init: update inventory'
 node ('master') {
-    build 'tna-ansible-etc'f
+    build 'tna-ansible-etc'
 }
 
 stage 'test: clean VM'
@@ -32,6 +32,6 @@ node ('master') {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
         /* execute ansible */
- //       ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", colorized: true)
+        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", colorized: true)
     }
 }
