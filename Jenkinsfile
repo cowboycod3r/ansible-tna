@@ -7,16 +7,21 @@ node ('master') {
 
 stage 'test: clean VM'
 node ('master') {
-    echo "stop the VM"
+    echo "stop VM"
     sh (script: "VBoxManage controlvm 'tna-ansible-${env.BRANCH_NAME}' poweroff", returnStatus: true)
 
-    echo "stop, reset, start, execute, stop"
+    echo "reset VM"
+    sh "VBoxManage snapshot 'tna-ansible-${env.BRANCH_NAME}' restore prepared"
+
+    echo "start VM"
+    sh "VBoxManage startvm 'tna-ansible-${env.BRANCH_NAME}' --type headless"
+
     echo "execute only the testing group"
 }
 
 stage 'test: used VM'
 node ('master') {
-    echo "start, execute, stop"
+    echo "start"
     echo "execute only the testing group"
 }
 
