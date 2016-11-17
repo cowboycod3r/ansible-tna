@@ -2,16 +2,19 @@
 
 stage 'init: update inventory'
 node ('master') {
-    build 'tna-ansible-etc'
+    build 'tna-ansible-etc'f
 }
 
 stage 'test: clean VM'
 node ('master') {
+    echo "stop the VM"
+    sh "VBoxManage controlvm 'tna-ansible-${env.BRANCH_NAME}' poweroff"
+
     echo "stop, reset, start, execute, stop"
     echo "execute only the testing group"
 }
 
-stage 'test: existing VM'
+stage 'test: used VM'
 node ('master') {
     echo "start, execute, stop"
     echo "execute only the testing group"
@@ -29,6 +32,6 @@ node ('master') {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
         /* execute ansible */
-        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", colorized: true)
+ //       ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", colorized: true)
     }
 }
