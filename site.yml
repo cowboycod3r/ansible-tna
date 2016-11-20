@@ -53,6 +53,6 @@
   roles:
     - init
     - airplay
-    - pi-wifi
     - dyndns
+    - pi-wifi
     - wordpress
