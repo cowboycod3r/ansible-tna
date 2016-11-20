@@ -16,6 +16,7 @@ node ('master') {
     echo "start VM"
     sh "VBoxManage startvm 'tna-ansible-${env.BRANCH_NAME}' --type headless"
 
+    sleep(2000)
     echo "execute only the testing group"
 }
 
