@@ -18,6 +18,14 @@ node ('master') {
 
     sleep 32
     echo "execute only the testing group"
+
+    /* Colorized Console Log */
+    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
+
+        /* execute ansible limit to testing */
+        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: 'testing', colorized: true)
+    }
+
 }
 
 stage 'test: used VM'
@@ -37,7 +45,7 @@ node ('master') {
     /* Colorized Console Log */
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
-        /* execute ansible */
-        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", colorized: true)
+        /* execute ansible excluding testing */
+        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: '!testing', colorized: true)
     }
 }
