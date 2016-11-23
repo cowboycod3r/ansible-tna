@@ -24,6 +24,9 @@ node ('master') {
 stage 'testing: clean VM'
 node ('master') {
 
+    /* check out current state on the node */
+    checkout scm
+
     /* Colorized Console Log */
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
@@ -35,6 +38,9 @@ node ('master') {
 
 stage 'testing: used VM'
 node ('master') {
+
+    /* check out current state on the node */
+    checkout scm
 
     /* Colorized Console Log */
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {

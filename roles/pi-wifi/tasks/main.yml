@@ -1,6 +1,5 @@
 ---
 # tasks for pi wifi
-
 - name: wifi dir
   file: path=/etc/wpa_supplicant state=directory
 
