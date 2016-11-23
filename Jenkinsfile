@@ -5,8 +5,9 @@ node ('master') {
     build 'tna-ansible-etc'
 }
 
-stage 'test: clean VM'
+stage 'testing: prepare VM'
 node ('master') {
+
     echo "stop VM"
     sh (script: "VBoxManage controlvm 'tna-ansible-${env.BRANCH_NAME}' poweroff", returnStatus: true)
 
@@ -17,7 +18,11 @@ node ('master') {
     sh "VBoxManage startvm 'tna-ansible-${env.BRANCH_NAME}' --type headless"
 
     sleep 32
-    echo "execute only the testing group"
+
+}
+
+stage 'testing: clean VM'
+node ('master') {
 
     /* Colorized Console Log */
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
@@ -28,10 +33,24 @@ node ('master') {
 
 }
 
-stage 'test: used VM'
+stage 'testing: used VM'
 node ('master') {
-    echo "start"
-    echo "execute only the testing group"
+
+    /* Colorized Console Log */
+    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
+
+        /* execute ansible limit to testing */
+        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: 'testing', colorized: true)
+    }
+
+}
+
+stage 'testing: stop VM'
+node ('master') {
+
+    echo "stop VM"
+    sh "VBoxManage controlvm 'tna-ansible-${env.BRANCH_NAME}' poweroff"
+
 }
 
 stage 'deployment'
