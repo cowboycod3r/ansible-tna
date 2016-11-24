@@ -62,15 +62,22 @@ node ('master') {
 stage 'deployment'
 node ('master') {
 
-    echo "execute all other groups with testing group"
+    if (env.BRANCH_NAME == 'master') {
 
-    /* check out current state on the node */
-    checkout scm
+        echo "execute all other groups with testing group"
 
-    /* Colorized Console Log */
-    wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
+        /* check out current state on the node */
+        checkout scm
 
-        /* execute ansible excluding testing */
-        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: '!testing', colorized: true)
+        /* Colorized Console Log */
+        wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
+
+            /* execute ansible excluding testing */
+            ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: '!testing', colorized: true)
+        }
+
+    } else {
+        echo 'no deployment'
     }
+
 }
