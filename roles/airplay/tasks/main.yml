@@ -70,7 +70,8 @@
 - name: change AP Name
   lineinfile: dest=/etc/init.d/shairport regexp=^AP_NAME= line=AP_NAME={{ host_name | capitalize }}
   notify:
-    - restart shairport
+    - reboot
+    - waiting for come back
 
 - name: shairport
   service: name=shairport state=started enabled=yes
