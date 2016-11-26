@@ -1,10 +1,5 @@
 #!groovy​
 
-stage 'init: update inventory'
-node ('master') {
-    build 'tna-ansible-etc'
-}
-
 stage 'testing: prepare VM'
 node ('master') {
 
