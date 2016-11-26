@@ -36,7 +36,7 @@ node ('master') {
 
 }
 
-stage 'testing: used VM'
+stage 'testing: running VM'
 node ('master') {
 
     /* check out current state on the node */
