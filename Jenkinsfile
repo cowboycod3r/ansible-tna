@@ -26,7 +26,7 @@ node ('master') {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
         /* execute ansible limit to testing */
-        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: 'testing', colorized: true)
+        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: 'testing, deploy', colorized: true)
     }
 
 }
@@ -41,7 +41,7 @@ node ('master') {
     wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
         /* execute ansible limit to testing */
-        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: 'testing', colorized: true)
+        ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: 'testing, deploy', colorized: true)
     }
 
 }
@@ -68,7 +68,7 @@ node ('master') {
         wrap([$class: 'AnsiColorBuildWrapper', colorMapName: "xterm"]) {
 
             /* execute ansible excluding testing */
-            ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: '!testing', colorized: true)
+            ansiblePlaybook(playbook: 'site.yml', inventory: "${env.ANSIBLE_INVENTORY}-${env.BRANCH_NAME}", limit: '!testing, deploy', colorized: true)
         }
 
     } else {
