@@ -23,15 +23,6 @@
     - deploy
 
 
-
-# system update
-
-- name: update all system components
-  apt: update_cache=yes cache_valid_time=86400 upgrade=dist
-  tags:
-    - update
-
-
 # install most important packages
 
 - name: install tools
