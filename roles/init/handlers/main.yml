@@ -1,12 +1,6 @@
 ---
 # common handlers
 
-- name: restart sshd
-  service: name=ssh state=restarted enabled=yes
-
-- name: restart avahi
-  service: name=avahi-daemon state=restarted enabled=yes
-
 - name: reboot
   command: reboot
   async: 20

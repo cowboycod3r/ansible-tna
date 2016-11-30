@@ -3,21 +3,30 @@
 
 - name: install nginx
   apt: name=nginx
+  tags:
+    - deploy
+
 
 - name: ssl dir for certificates
   file: path=/etc/nginx/ssl state=directory
+  tags:
+    - deploy
 
 - name: create certificate
   command: openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/{{ host_name }}.key -out /etc/nginx/ssl/{{ host_name }}.crt -subj "/C=DE/ST=Bavaria/L=Munich/CN={{ cert_host_name }}"
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: nginx configuration for wordpress
   template: src=default.conf.j2 dest=/etc/nginx/sites-available/default backup=yes
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: nginx basic auth
   htpasswd: path=/etc/nginx/.htpasswd name={{ item.name }} password={{ item.passwd }} mode=0644
@@ -25,13 +34,19 @@
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: nginx service
   service: name=nginx state=started enabled=yes
   tags:
-    - systemcheck
+    - deploy
+    - services
 
 
+
+
+  # php section
 
 - name: install php5
   apt: name={{ item }}
@@ -41,33 +56,46 @@
     - php5-gd
     - php5-curl
     - php-apc
+  tags:
+    - deploy
 
 - name: disable default pool
   command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.disabled creates=/etc/php5/fpm/pool.d/www.disabled
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: copy php-fpm configuration
   template: src=wordpress.conf.j2 dest=/etc/php5/fpm/pool.d/wordpress.conf backup=yes
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: php5-fpm service
   service: name=php5-fpm state=started enabled=yes
   tags:
-    - systemcheck
+    - deploy
+    - services
 
 
 
+
+  # mysql database
 
 - name: install mysql database
   apt: name=mysql-server
   register: mysql
+  tags:
+    - deploy
 
 - name: install MySQL-python (python-mysqldb)
   apt: name=python-mysqldb
+  tags:
+    - deploy
 
 - name: update mysql root passwords for other hosts using login password
   mysql_user: name=root host={{ item }} password={{ mysql_root_password }} login_user=root login_password={{ mysql_root_password }}
@@ -78,6 +106,8 @@
     - 127.0.0.1
     - ::1
     - localhost
+  tags:
+    - deploy
 
 - name: update mysql root passwords for other hosts using no password
   mysql_user: name=root host={{ item }} password={{ mysql_root_password }}
@@ -88,6 +118,8 @@
     - 127.0.0.1
     - ::1
     - localhost
+  tags:
+    - deploy
 
 - name: ensure anonymous users are not in the database
   mysql_user: name='' host={{ item }} state=absent login_user=root login_password={{ mysql_root_password }}
@@ -95,32 +127,45 @@
     - localhost
     - "{{ ansible_hostname }}"
     - "{{ host_name }}"
+  tags:
+    - deploy
 
 - name: remove the test database
   mysql_db: name=test state=absent login_user=root login_password={{ mysql_root_password }}
+  tags:
+    - deploy
 
 - name: create mysql configuration file
   template: src=my.conf.j2 dest=/etc/my.cnf backup=yes
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: mysql service
   service: name=mysql state=started enabled=yes
   tags:
-    - systemcheck
+    - deploy
+    - services
 
 - name: no html folder
   file: path=/var/www/html state=absent
+  tags:
+    - deploy
 
 - name: blog dirs
   file: path=/var/www/{{ item }} state=directory
   with_items: "{{ blog_names }}"
   register: blog_dirs
+  tags:
+    - deploy
 
 - name: get wordpress
   get_url: url=http://wordpress.org/wordpress-{{ wp_version }}.tar.gz dest=/var/www/wordpress-{{ wp_version }}.tar.gz
   register: get_wordpress
+  tags:
+    - deploy
 
 - name: update wordpress (delete wp-includes and wp-admin)
   command: chdir=/var/www/{{ item[0] }} rm -rf {{ item[1] }}
@@ -128,73 +173,103 @@
   with_nested:
     - "{{ blog_names }}"
     - ['wp-includes', 'wp-admin']
+  tags:
+    - deploy
 
 - name: extract archive
   command: chdir=/var/www/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz
   when: get_wordpress|changed or blog_dirs|changed
+  tags:
+    - deploy
 
 - name: copy wordpress to subfolders
   command: chdir=/var/www/wordpress cp -r . ../{{ item }}
   with_items: "{{ blog_names }}"
   when: get_wordpress|changed or blog_dirs|changed
+  tags:
+    - deploy
 
 - name: clean wordpress dir
   command: chdir=/var/www rm -rf wordpress
   when: get_wordpress|changed or blog_dirs|changed
+  tags:
+    - deploy
 
 - name: add group "wordpress"
   group: name=wordpress
+  tags:
+    - deploy
 
 - name: add user "wordpress"
   user: name=wordpress group=wordpress home=/var/www/
+  tags:
+    - deploy
 
 - name: create wordpress database
   mysql_db: name=wp_{{ item }} state=present login_user=root login_password={{ mysql_root_password }}
   with_items: "{{ blog_names }}"
+  tags:
+    - deploy
 
 - name: create wordpress database user
   mysql_user: name=wp_{{ item }} password={{ wp_db_password }} priv=wp_{{ item }}.*:ALL host='localhost' state=present  login_user=root login_password={{ mysql_root_password }}
   with_items: "{{ blog_names }}"
+  tags:
+    - deploy
 
 - name: copy wordpress config file
   template: src=wp-config.php.j2 dest=/var/www/{{ item }}/wp-config.php backup=yes
   with_items: "{{ blog_names }}"
+  tags:
+    - deploy
 
 - name: change ownership of wordpress installation
   file: path=/var/www/{{ item }}/ owner=wordpress group=wordpress state=directory recurse=yes
   with_items: "{{ blog_names }}"
+  tags:
+    - deploy
 
 - name: set upload max file size
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^upload_max_filesize line="upload_max_filesize = 64M"
   notify:
     - reboot
+  tags:
+    - deploy
 
 - name: set post max  size
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^post_max_size line="post_max_size = 64M"
   notify:
     - reboot
+  tags:
+    - deploy
 
 - name: set max execution time
   lineinfile: dest=/etc/php5/fpm/php.ini regexp=^max_execution_time line="max_execution_time = 360"
   notify:
     - reboot
+  tags:
+    - deploy
 
 
 
 
 - name: install avahi deamon
   apt: name=avahi-daemon
+  tags:
+    - deploy
 
 - name: avahi configuration
   template: src=http.service.j2 dest=/etc/avahi/services/http.service backup=yes
   notify:
     - reboot
     - waiting for come back
+  tags:
+    - deploy
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
   tags:
-    - systemcheck
-
+    - deploy
+    - services
 
 
