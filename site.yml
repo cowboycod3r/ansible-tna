@@ -17,6 +17,18 @@
       apt: update_cache=yes cache_valid_time=86400 upgrade=dist
       tags:
         - update
+    - name: reboot
+      command: reboot
+      async: 20
+      poll: 0
+      ignore_errors: true
+      tags:
+        - reboot
+    - name: waiting for come back
+      local_action: wait_for host={{ inventory_hostname }} port=22 state=started  timeout=120
+      become: no
+      tags:
+        - reboot
 
 
 # idle server (could be used for jenkins slaves)
