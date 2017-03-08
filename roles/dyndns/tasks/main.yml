@@ -22,6 +22,6 @@
   service: name=ddclient state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 

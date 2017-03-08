@@ -13,7 +13,7 @@
   service: name=avahi-daemon state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 - name: install git
   apt: name=git state=present
@@ -108,7 +108,7 @@
   service: name=shairport state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 
 

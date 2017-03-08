@@ -41,7 +41,7 @@
   service: name=nginx state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 
 
@@ -79,7 +79,7 @@
   service: name=php5-fpm state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 
 
@@ -147,7 +147,7 @@
   service: name=mysql state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 - name: no html folder
   file: path=/var/www/html state=absent
@@ -270,6 +270,6 @@
   service: name=avahi-daemon state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 

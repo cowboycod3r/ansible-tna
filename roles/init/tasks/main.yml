@@ -90,7 +90,7 @@
   service: name=avahi-daemon state=started enabled=yes
   tags:
     - deploy
-    - services
+    - service
 
 # install libs
 
