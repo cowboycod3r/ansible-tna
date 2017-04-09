@@ -46,7 +46,6 @@
   roles:
     - init
     - airplay
-    - pi-wifi
 
 # application server
 - name: appserver
@@ -55,7 +54,7 @@
   roles:
     - init
 
-# multi blog server with wordpress
+# blog server with wordpress
 - name: wordpress
   hosts: wordpress
   become: yes
@@ -71,5 +70,4 @@
     - init
     - airplay
     - dyndns
-    - pi-wifi
     - wordpress

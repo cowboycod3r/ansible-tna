@@ -23,6 +23,27 @@
     - deploy
 
 
+
+
+# tasks for pi wifi
+- name: wifi dir
+  file: path=/etc/wpa_supplicant state=directory
+  when: wifi == true
+  tags:
+    - deploy
+
+- name: wifi config file
+  template: src=wpa_supplicant.conf.j2 dest=/etc/wpa_supplicant/wpa_supplicant.conf backup=yes
+  when: wifi == true
+  notify:
+    - reboot
+    - waiting for come back
+  tags:
+    - deploy
+
+
+
+
 # install most important packages
 
 - name: install tools
