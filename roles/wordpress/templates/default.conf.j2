@@ -24,9 +24,6 @@ gzip_types              text/css text/x-component application/x-javascript appli
                 ssl_certificate		    /etc/nginx/ssl/{{ host_name }}.crt;
                 ssl_certificate_key 	/etc/nginx/ssl/{{ host_name }}.key;
 
-		        auth_basic "No public area.";
-		        auth_basic_user_file /etc/nginx/.htpasswd;
-
                 client_max_body_size    64M;
 
 
