@@ -1,9 +1,6 @@
 ---
 # master playbook
 
-
-
-
 # get os
 - name: os
   hosts: all
@@ -38,14 +35,6 @@
   roles:
     - init
 
-# multi blog server with wordpress
-- name: wordpress
-  hosts: wordpress
-  become: yes
-  roles:
-    - init
-    - wordpress
-
 # testing all roles
 - name: testing
   hosts: testing
@@ -55,4 +44,3 @@
     - airplay
     - dyndns
     - pi-wifi
-    - wordpress
