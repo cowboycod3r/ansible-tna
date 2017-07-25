@@ -43,19 +43,3 @@
   roles:
     - init
     - airplay
-
-# application server
-- name: appserver
-  hosts: appserver
-  become: yes
-  roles:
-    - init
-
-# testing all roles
-- name: testing
-  hosts: testing
-  become: yes
-  roles:
-    - init
-    - airplay
-    - dyndns
