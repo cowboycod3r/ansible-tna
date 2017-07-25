@@ -9,7 +9,7 @@ pipeline {
             }
             steps {
 
-                sh "ansible-playbook site.yml -i ${ANSIBLE_INVENTORY} -t 'available'"
+                sh "ansible-playbook site.yml -i ${ANSIBLE_INVENTORY} -t 'available,deploy'"
             }
         }
     }
