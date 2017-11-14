@@ -59,7 +59,7 @@
 
 
 - name: switch to fish
-  command: chsh -s /bin/fish "{{ ansible_ssh_user }}"
+  command: chsh -s /usr/bin/fish "{{ ansible_ssh_user }}"
   changed_when: False
   tags:
     - deploy
@@ -67,9 +67,9 @@
 
 
 
-# get fish-config from github
+# get fish-config and vim-config from github
 
-- name: clone devEnvironment from github
+- name: clone fish-config from github
   git: repo=https://github.com/cowboycod3r/fish-config.git dest=/opt/fish-config
   register: result
   tags:
@@ -84,6 +84,18 @@
 - file:
     path: /opt/fish-config/config.local.fish
     state: touch
+
+- name: clone vim-config from github
+  git: repo=https://github.com/cowboycod3r/vim-config.git dest=/opt/vim-config
+  register: result
+  tags:
+    - deploy
+
+- name: create sym links for remote user
+  shell: ./install.sh chdir=/opt/vim-config
+  when: result|changed
+  tags:
+    - deploy
 
 
 
