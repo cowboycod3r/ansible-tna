@@ -67,10 +67,10 @@
 
 
 
-# get devEnvironment from github
+# get fish-config from github
 
 - name: clone devEnvironment from github
-  git: repo=https://github.com/cowboycod3r/fish-config.git dest=/opt/fish-config version=debian
+  git: repo=https://github.com/cowboycod3r/fish-config.git dest=/opt/fish-config
   register: result
   tags:
     - deploy
@@ -81,7 +81,10 @@
   tags:
     - deploy
 
-# create config.local.fish
+- file:
+    path: /opt/fish-config/config.local.fish
+    state: touch
+
 
 
 
