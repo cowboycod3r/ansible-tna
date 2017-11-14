@@ -1,26 +1,6 @@
 ---
 # tasks for airplay
 
-
-
-
-- name: install avahi deamon
-  apt: name=avahi-daemon
-  tags:
-    - deploy
-
-- name: avahi
-  service: name=avahi-daemon state=started enabled=yes
-  tags:
-    - deploy
-    - service
-
-- name: install git
-  apt: name=git state=present
-  tags:
-    - deploy
-
-
 - name: install libs -> libssl-dev
   apt: name=libssl-dev state=present
   tags:
@@ -54,6 +34,7 @@
 
 
 
+# install shairport
 - name: clone shairport from github
   git: repo=https://github.com/abrasive/shairport.git dest=/opt/shairport
   register: clone_shairport

@@ -49,7 +49,7 @@
 - name: install tools
   apt: name={{ item }} state=latest
   with_items:
-    - zsh
+    - fish
     - vim
     - git
     - nmap
@@ -58,8 +58,8 @@
     - deploy
 
 
-- name: switch to zsh
-  command: chsh -s /bin/zsh "{{ ansible_ssh_user }}"
+- name: switch to fish
+  command: chsh -s /bin/fish "{{ ansible_ssh_user }}"
   changed_when: False
   tags:
     - deploy
@@ -70,17 +70,18 @@
 # get devEnvironment from github
 
 - name: clone devEnvironment from github
-  git: repo=https://github.com/cowboycod3r/devEnvironment.git dest=/opt/devEnvironment version=debian
+  git: repo=https://github.com/cowboycod3r/fish-config.git dest=/opt/fish-config version=debian
   register: result
   tags:
     - deploy
 
 - name: create sym links for remote user
-  shell: ./create-links.sh chdir=/opt/devEnvironment
+  shell: ./install.sh chdir=/opt/fish-config
   when: result|changed
   tags:
     - deploy
 
+# create config.local.fish
 
 
 

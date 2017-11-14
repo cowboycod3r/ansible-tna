@@ -27,18 +27,9 @@
       tags:
         - reboot
 
-
-# idle server (could be used for jenkins slaves)
-- name: idle
-  hosts: idle
-  become: yes
-  roles:
-    - init
-    - dyndns
-
-# home automation
-- name: autohome
-  hosts: autohome
+# home server
+- name: sound
+  hosts: sound
   become: yes
   roles:
     - init
