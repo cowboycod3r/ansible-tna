@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('available') {
             steps {
-                sh "ansible-playbook site.yml -i ${ANSIBLE_INVENTORY} -t 'available'"
+                sh "ansible-playbook site.yml -t 'available'"
             }
         }
         stage('deployment') {
@@ -13,12 +13,12 @@ pipeline {
                 }
             }
             steps {
-                sh "ansible-playbook site.yml -i ${ANSIBLE_INVENTORY} -t 'available,deploy'"
+                sh "ansible-playbook site.yml -t 'available,deploy'"
             }
         }
         stage('update') {
             steps {
-                sh "ansible-playbook site.yml -i ${ANSIBLE_INVENTORY} -t 'update'"
+                sh "ansible-playbook site.yml -t 'update'"
             }
 
         }
