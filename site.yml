@@ -10,6 +10,11 @@
       debug: msg="{{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
       tags:
         - available
+
+- name: update
+  hosts: all
+  become: yes
+  tasks:
     - name: update all system components
       apt: update_cache=yes cache_valid_time=86400 upgrade=dist
       tags:
