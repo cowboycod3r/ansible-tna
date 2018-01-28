@@ -6,22 +6,14 @@
 
 - name: install ddclient
   apt: name=ddclient
-  tags:
-    - deploy
-
 
 - name: ddclient configuration
   template: src=ddclient.conf.j2 dest=/etc/ddclient.conf backup=yes
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 - name: ddclient service
   service: name=ddclient state=started enabled=yes
-  tags:
-    - deploy
-    - service
 
 

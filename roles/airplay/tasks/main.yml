@@ -3,19 +3,12 @@
 
 - name: install libs -> libssl-dev
   apt: name=libssl-dev state=present
-  tags:
-    - deploy
-
 
 - name: install libs -> libavahi-client-dev
   apt: name=libavahi-client-dev state=present
-  tags:
-    - deploy
 
 - name: install libs -> libasound2-dev
   apt: name=libasound2-dev state=present
-  tags:
-    - deploy
 
 
 
@@ -23,13 +16,9 @@
   # use 'mkpasswd --method=SHA-512' to generate hash
 - name: create shairport user
   user: name=shairport password={{ unix_default_password_hash }}
-  tags:
-    - deploy
 
 - name: install my public key for shairport user
   authorized_key: user=shairport key="{{ lookup('file', me_key) }}" manage_dir=yes
-  tags:
-    - deploy
 
 
 
@@ -41,20 +30,14 @@
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 - name: make
   command: make chdir=/opt/shairport
   when: clone_shairport|changed
-  tags:
-    - deploy
 
 - name: make install
   command: make install chdir=/opt/shairport
   when: clone_shairport|changed
-  tags:
-    - deploy
 
 
 
@@ -62,34 +45,24 @@
 - name: init.d copy
   command: cp /opt/shairport/scripts/debian/init.d/shairport /etc/init.d/shairport
   when: clone_shairport|changed
-  tags:
-    - deploy
 
 - name: init.d permissions
   file: path=/etc/init.d/shairport mode=0755
   when: clone_shairport|changed
-  tags:
-    - deploy
 
 - name: update-rc.d
   command: update-rc.d shairport defaults
   when: clone_shairport|changed
-  tags:
-    - deploy
 
 - name: change AP Name
   lineinfile: dest=/etc/init.d/shairport regexp=^AP_NAME= line=AP_NAME={{ host_name | capitalize }}
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 - name: shairport
   service: name=shairport state=started enabled=yes
-  tags:
-    - deploy
-    - service
+
 
 
 
@@ -98,5 +71,3 @@
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy

@@ -54,15 +54,10 @@
     - git
     - nmap
     - build-essential
-  tags:
-    - deploy
-
 
 - name: switch to fish
   command: chsh -s /usr/bin/fish "{{ ansible_ssh_user }}"
   changed_when: False
-  tags:
-    - deploy
 
 
 
@@ -72,14 +67,10 @@
 - name: clone fish-config from github
   git: repo=https://github.com/cowboycod3r/fish-config.git dest=/opt/fish-config
   register: result
-  tags:
-    - deploy
 
 - name: create sym links for remote user
   shell: ./install.sh chdir=/opt/fish-config
   when: result|changed
-  tags:
-    - deploy
 
 - file:
     path: /opt/fish-config/config.local.fish
@@ -88,14 +79,10 @@
 - name: clone vim-config from github
   git: repo=https://github.com/cowboycod3r/vim-config.git dest=/opt/vim-config
   register: result
-  tags:
-    - deploy
 
 - name: create sym links for remote user
   shell: ./install.sh chdir=/opt/vim-config
   when: result|changed
-  tags:
-    - deploy
 
 
 
@@ -104,30 +91,21 @@
 
 - name: install avahi deamon to become visible in the network
   apt: name=avahi-daemon
-  tags:
-    - deploy
 
 - name: update the avahi configuration for ssh
   template: src=ssh.service.j2 dest=/etc/avahi/services/ssh.service backup=yes
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 - name: update the avahi configuration for sftp
   template: src=sftp.service.j2 dest=/etc/avahi/services/sftp.service backup=yes
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
-  tags:
-    - deploy
-    - service
 
 # install libs
 
@@ -135,8 +113,6 @@
   apt: name={{ item }} state=latest
   with_items:
     - python-passlib
-  tags:
-    - deploy
 
 
 
@@ -146,23 +122,15 @@
   # use mkpasswd --method=SHA-512 to generate hash
 - name: create me as new user
   user: name={{ me }} shell=/bin/zsh password={{ unix_default_password_hash }}
-  tags:
-    - deploy
 
 - name: check the owner of my home dir
   file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
-  tags:
-    - deploy
 
 - name: install my public key for me
   authorized_key: user={{ me }} key="{{ lookup('file', me_key) }}" manage_dir=yes
-  tags:
-    - deploy
 
 - name: add me to sudoers
   lineinfile: dest=/etc/sudoers state=present regexp="^{{ me }}" line="{{ me }}   ALL=(ALL:ALL) ALL" insertafter="^root"
-  tags:
-    - deploy
 
 
 
@@ -171,13 +139,9 @@
 
 - name: provide public key for the current remote user
   authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
-  tags:
-    - deploy
 
 - name: provide my public key for the remote user too
   authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
-  tags:
-    - deploy
 
 
 
@@ -189,7 +153,3 @@
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
-
-
