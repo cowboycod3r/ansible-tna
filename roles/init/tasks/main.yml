@@ -11,16 +11,12 @@
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 - name: update hosts file
   lineinfile: dest=/etc/hosts regexp="^127.0.1.1" line="127.0.1.1\t{{ host_name }}"
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 
 
@@ -38,8 +34,6 @@
   notify:
     - reboot
     - waiting for come back
-  tags:
-    - deploy
 
 
 
