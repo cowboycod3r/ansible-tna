@@ -9,23 +9,6 @@
     - name: os
       debug: msg="{{ ansible_distribution }} {{ ansible_distribution_release }} {{ ansible_distribution_version }}"
 
-- name: update
-  hosts: all
-  become: yes
-  tasks:
-    - name: update all system components
-      apt: update_cache=yes cache_valid_time=86400 upgrade=dist
-
-    - name: reboot
-      command: reboot
-      async: 20
-      poll: 0
-      ignore_errors: true
-
-    - name: waiting for come back
-      local_action: wait_for host={{ inventory_hostname }} port=22 state=started  timeout=120
-      become: no
-
 # home
 - name: sound
   hosts: sound
@@ -33,3 +16,9 @@
   roles:
     - init
     - airplay
+
+- name: jenkins
+  hosts: jenkins
+  become: yes
+  roles:
+    - init

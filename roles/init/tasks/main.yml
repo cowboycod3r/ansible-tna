@@ -1,8 +1,15 @@
 ---
 # tasks for init
 
-# hostname ---------------------------------------------------------------------
+# update the system ------------------------------------------------------------
+- name: update the system
+  apt: update_cache=yes upgrade=dist autoclean=yes autoremove=yes
+  notify:
+    - reboot
+    - waiting for come back
 
+
+# hostname ---------------------------------------------------------------------
 - name: set the hostname
   hostname: name="{{ host_name }}"
   notify:
