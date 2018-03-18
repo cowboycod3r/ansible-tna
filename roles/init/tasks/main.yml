@@ -1,10 +1,7 @@
 ---
 # tasks for init
 
-
-
-
-# hostname
+# hostname ---------------------------------------------------------------------
 
 - name: set the hostname
   hostname: name="{{ host_name }}"
@@ -21,7 +18,7 @@
 
 
 
-# tasks for pi wifi
+# tasks for pi wifi ------------------------------------------------------------
 - name: wifi dir
   file: path=/etc/wpa_supplicant state=directory
   when: wifi == true
@@ -38,50 +35,97 @@
 
 
 
-# install most important packages
+# install most important packages ----------------------------------------------
 
-- name: install tools
+- name: install tools and libs
   apt: name={{ item }} state=latest
   with_items:
     - fish
     - vim
     - git
     - nmap
+    - tree
     - build-essential
-
-- name: switch to fish
-  command: chsh -s /usr/bin/fish "{{ ansible_ssh_user }}"
-  changed_when: False
+    - python-passlib
 
 
 
 
-# get fish-config and vim-config from github
+# create users and provide public key ------------------------------------------
+
+# use mkpasswd --method=SHA-512 to generate hash
+- name: create me as new user
+  user: name={{ me }} password={{ unix_default_password_hash }}
+
+- name: check the owner of home dir
+  file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
+
+- name: add me to sudoers
+  lineinfile: dest=/etc/sudoers state=present regexp="^{{ me }}" line="{{ me }}   ALL=(ALL:ALL) ALL" insertafter="^root"
+
+# public keys
+- name: install my public key for me and the remote user
+  authorized_key: user="{{ item }}" key="{{ me_key }}" manage_dir=yes
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
+
+- name: install ssh user public key for the current ssh user
+  authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
+
+
+
+
+# get fish-config and vim-config for all users ---------------------------------
 
 - name: clone fish-config from github
-  git: repo=https://github.com/cowboycod3r/fish-config.git dest=/opt/fish-config
-  register: result
+  git: repo=https://github.com/cowboycod3r/fish-config.git dest="/home/{{ item }}/.config/fish"
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
 
-- name: create sym links for remote user
-  shell: ./install.sh chdir=/opt/fish-config
-  when: result|changed
+- name: create locale fish config file
+  template: src=config.local.fish.j2 dest="/home/{{ item }}/.config/fish/config.local.fish" owner="{{ item }}"
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
 
-- file:
-    path: /opt/fish-config/config.local.fish
-    state: touch
+- name: switch to fish
+  command: chsh -s /usr/bin/fish "{{ item }}"
+  changed_when: False
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
 
 - name: clone vim-config from github
-  git: repo=https://github.com/cowboycod3r/vim-config.git dest=/opt/vim-config
+  git: repo=https://github.com/cowboycod3r/vim-config.git dest="/home/{{ item }}/.vim"
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
   register: result
 
-- name: create sym links for remote user
-  shell: ./install.sh chdir=/opt/vim-config
-  when: result|changed
+- name: create sym links for vim
+  file:
+    src: /home/{{ item }}/.vim/vimrc
+    dest: /home/{{ item }}/.vimrc
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    state: link
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
+
+- name: finally check the owner ship of home dir
+  file: path=/home/{{ item }} owner={{ item }} group={{ item }} recurse=yes
+  changed_when: False
+  with_items:
+    - "{{ me }}"
+    - "{{ ansible_ssh_user }}"
 
 
 
 
-# install avahi
+# install avahi ----------------------------------------------------------------
 
 - name: install avahi deamon to become visible in the network
   apt: name=avahi-daemon
@@ -101,46 +145,10 @@
 - name: avahi service
   service: name=avahi-daemon state=started enabled=yes
 
-# install libs
-
-- name: install libs
-  apt: name={{ item }} state=latest
-  with_items:
-    - python-passlib
 
 
 
-
-# create users and provide public key
-
-  # use mkpasswd --method=SHA-512 to generate hash
-- name: create me as new user
-  user: name={{ me }} shell=/usr/bin/fish password={{ unix_default_password_hash }}
-
-- name: check the owner of my home dir
-  file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
-
-- name: install my public key for me
-  authorized_key: user={{ me }} key="{{ lookup('file', me_key) }}" manage_dir=yes
-
-- name: add me to sudoers
-  lineinfile: dest=/etc/sudoers state=present regexp="^{{ me }}" line="{{ me }}   ALL=(ALL:ALL) ALL" insertafter="^root"
-
-
-
-
-# provide public keys for remote user
-
-- name: provide public key for the current remote user
-  authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
-
-- name: provide my public key for the remote user too
-  authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', me_key) }}" manage_dir=yes
-
-
-
-
-# update sshd configuration
+# update sshd configuration ----------------------------------------------------
 
 - name: update the sshd configuration file to avoid login with password
   template: src=sshd_config.j2 dest=/etc/ssh/sshd_config backup=yes owner=0 group=0 mode=0644
