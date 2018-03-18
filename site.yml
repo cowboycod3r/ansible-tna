@@ -14,11 +14,11 @@
   hosts: sound
   become: yes
   roles:
-    - init
+    - managed
     - airplay
 
 - name: jenkins
   hosts: jenkins
   become: yes
   roles:
-    - init
+    - managed
