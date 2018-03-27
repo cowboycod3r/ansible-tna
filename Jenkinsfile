@@ -1,11 +1,6 @@
 pipeline {
     agent any
     stages {
-        stage('available') {
-            steps {
-                sh "ansible-playbook site.yml -t 'available'"
-            }
-        }
         stage('deployment') {
             when {
                 expression {
@@ -13,14 +8,8 @@ pipeline {
                 }
             }
             steps {
-                sh "ansible-playbook site.yml -t 'available,deploy'"
+                sh "ansible-playbook site.yml"
             }
-        }
-        stage('update') {
-            steps {
-                sh "ansible-playbook site.yml -t 'update'"
-            }
-
         }
     }
 }

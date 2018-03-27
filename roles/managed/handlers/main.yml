@@ -6,7 +6,9 @@
   async: 20
   poll: 0
   ignore_errors: true
+  when: reboot == true
 
 - name: waiting for come back
   local_action: wait_for host={{ inventory_hostname }} port=22 state=started  timeout=120
   become: no
+  when: reboot == true
