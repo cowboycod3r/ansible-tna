@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    triggers {
+        cron('@daily')
+    }
+
     stages {
         stage('deployment') {
             when {
