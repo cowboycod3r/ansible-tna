@@ -17,12 +17,6 @@
     - managed
     - airplay
 
-- name: jenkins
-  hosts: jenkins
-  become: yes
-  roles:
-    - managed
-
 - name: managed_only
   hosts: managed_only
   become: yes
