@@ -17,8 +17,8 @@
     - managed
     - airplay
 
-- name: managed_only
-  hosts: managed_only
+- name: managed
+  hosts: managed
   become: yes
   roles:
     - managed
