@@ -75,7 +75,7 @@
     - "{{ me }}"
     - "{{ ansible_ssh_user }}"
 
-- name: install ssh user public key for the current ssh user
+- name: install ssh user public key for the ansible ssh user
   authorized_key: user="{{ ansible_ssh_user }}" key="{{ lookup('file', '~/.ssh/id_rsa.pub') }}" manage_dir=yes
 
 
