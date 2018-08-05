@@ -1,1 +1,3 @@
 #pattern  filter=crypt diff=crypt
+etc/hosts     filter=crypt diff=crypt
+etc/**/*.yml  filter=crypt diff=crypt
