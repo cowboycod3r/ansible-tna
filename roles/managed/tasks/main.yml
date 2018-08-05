@@ -62,9 +62,6 @@
 - name: create me as new user
   user: name={{ me }} password={{ unix_default_password_hash }}
 
-- name: check the owner of home dir
-  file: path=/home/{{ me }} owner={{ me }} group={{ me }} recurse=yes
-
 - name: add me to sudoers
   lineinfile: dest=/etc/sudoers state=present regexp="^{{ me }}" line="{{ me }}   ALL=(ALL:ALL) ALL" insertafter="^root"
 
