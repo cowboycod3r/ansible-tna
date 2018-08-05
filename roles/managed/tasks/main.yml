@@ -48,6 +48,7 @@
     - fish
     - vim
     - git
+    - tig
     - nmap
     - tree
     - build-essential
